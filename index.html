@@ -186,12 +186,8 @@
         <!-- Header -->
         <div class="px-6 pt-9 pb-5 text-center">
             <div class="text-center mb-5">
-                <h1 class="smp-body text-sm tracking-widest uppercase mb-1" style="font-weight: 400; color: #000000;">
-                    WELLNESS EXPERIENCE SURVEY
-                </h1>
-                
                 <!-- Santa Monica Proper Logo -->
-                <div class="flex justify-center mb-5 mt-6">
+                <div class="flex justify-center mb-5">
                     <img 
                         src="santa_monica_proper_logo.png" 
                         alt="Santa Monica Proper Hotel"
@@ -199,11 +195,15 @@
                         style="max-height: 4rem;"
                     />
                 </div>
+                
+                <h1 class="smp-body text-sm tracking-widest uppercase mb-1" style="font-weight: 400; color: #000000;">
+                    WELLNESS EXPERIENCE SURVEY
+                </h1>
 
                 <!-- Survey Purpose -->
-                <div class="smp-body text-xs leading-relaxed max-w-sm mx-auto p-4 border" 
+                <div class="smp-body text-sm leading-relaxed max-w-sm mx-auto p-4 border" 
                      style="background-color: rgba(255, 255, 255, 0.3); border-color: rgba(0, 0, 0, 0.1); color: #000000;">
-                    Help us create your personalized wellness itinerary. This brief survey will generate a detailed day-by-day schedule of activities, treatments, and dining experiences tailored to your preferences and stay.
+                    Help us create your personalized wellness itinerary. This brief survey will generate a detailed day-by-day schedule of activities, treatments, and dining experiences tailored to your preferences and your stay.
                 </div>
             </div>
             
@@ -500,7 +500,6 @@
             <button
                 id="prev-btn"
                 class="btn-primary smp-body px-4 py-2 text-xs tracking-wide uppercase"
-                onclick="prevStep()"
                 disabled
             >
                 Previous
@@ -509,7 +508,6 @@
             <button
                 id="next-btn"
                 class="btn-primary smp-body px-4 py-2 text-xs tracking-wide uppercase"
-                onclick="nextStep()"
                 disabled
             >
                 Next
@@ -518,7 +516,6 @@
             <button
                 id="complete-btn"
                 class="btn-primary smp-body px-4 py-2 text-xs tracking-wide uppercase"
-                onclick="completeSurvey()"
                 style="display: none;"
             >
                 Complete Survey
@@ -557,20 +554,46 @@
 
         // Add event listeners for form inputs
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing survey...');
+            
+            // Add event listeners to navigation buttons
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const completeBtn = document.getElementById('complete-btn');
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', nextStep);
+                console.log('Added click listener to next button');
+            }
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', prevStep);
+                console.log('Added click listener to prev button');
+            }
+            
+            if (completeBtn) {
+                completeBtn.addEventListener('click', completeSurvey);
+                console.log('Added click listener to complete button');
+            }
+            
             const inputs = ['guest-names', 'party-type', 'arrival-date', 'length-of-stay'];
             inputs.forEach(id => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.addEventListener('change', updateStepDisplay);
                     element.addEventListener('input', updateStepDisplay);
+                    console.log('Added listener to:', id);
                 }
             });
+            
+            // Initialize display
+            updateStepDisplay();
+            console.log('Survey initialized');
         });
 
-        // Initialize
-        updateStepDisplay();
-
         function updateStepDisplay() {
+            console.log('Updating step display, current step:', currentStep);
+            
             document.getElementById('current-step').textContent = currentStep;
             document.getElementById('total-steps').textContent = totalSteps;
             document.getElementById('step-title').textContent = stepTitles[currentStep - 1];
@@ -587,6 +610,9 @@
             const currentStepElement = document.getElementById(`step-${currentStep}`);
             if (currentStepElement) {
                 currentStepElement.classList.add('active');
+                console.log('Activated step:', currentStep);
+            } else {
+                console.error('Could not find step element:', `step-${currentStep}`);
             }
 
             // Update navigation buttons
@@ -608,6 +634,7 @@
                     const stepComplete = isStepComplete();
                     nextBtn.disabled = !stepComplete;
                     nextBtn.style.opacity = stepComplete ? '1' : '0.5';
+                    console.log('Next button enabled:', stepComplete);
                 }
                 if (completeBtn) completeBtn.style.display = 'none';
             }
@@ -635,6 +662,7 @@
 
         function nextStep() {
             console.log('Next step clicked, current step:', currentStep);
+            console.log('Is step complete:', isStepComplete());
             if (currentStep < totalSteps && isStepComplete()) {
                 saveCurrentStepData();
                 currentStep++;
@@ -645,6 +673,9 @@
                 updateStepDisplay();
             } else {
                 console.log('Step not complete or already at last step');
+                if (!isStepComplete()) {
+                    alert('Please complete all required fields before proceeding.');
+                }
             }
         }
 
@@ -732,4 +763,139 @@
                         Your Wellness Profile
                     </h3>
                     <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div
+                        <div>
+                            <span class="smp-header uppercase tracking-wide" style="color: #666666;">Energy Level:</span>
+                            <p class="smp-body mt-1 capitalize">
+                                ${energyLevel ? energyLevel.replace('-', ' ') : 'Not specified'}
+                            </p>
+                        </div>
+                        <div>
+                            <span class="smp-header uppercase tracking-wide" style="color: #666666;">Interests:</span>
+                            <p class="smp-body mt-1">
+                                ${interests.length > 0 ? interests.join(', ') : 'All areas'}
+                            </p>
+                        </div>
+                        <div>
+                            <span class="smp-header uppercase tracking-wide" style="color: #666666;">Group Type:</span>
+                            <p class="smp-body mt-1 capitalize">
+                                ${guestInfo.partyType || 'Not specified'}
+                            </p>
+                        </div>
+                        <div>
+                            <span class="smp-header uppercase tracking-wide" style="color: #666666;">Timing:</span>
+                            <p class="smp-body mt-1 capitalize">
+                                ${timingPreference ? timingPreference.replace('-', ' ') : 'Flexible'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample Itinerary -->
+                <div class="day-container">
+                    <div class="day-header p-3">
+                        <h3 class="smp-header text-xs tracking-wide uppercase">
+                            Day 1 - Arrival & Welcome
+                        </h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="activity-item">
+                            <div class="activity-time">2:00 PM</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Check-in & Welcome</div>
+                                <div class="activity-location">Front Desk</div>
+                                <div class="activity-description">
+                                    Arrive and check into your room. Receive your personalized wellness welcome package.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">3:30 PM</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Wellness Consultation</div>
+                                <div class="activity-location">Surya Spa</div>
+                                <div class="activity-description">
+                                    Brief consultation to finalize your personalized treatment schedule.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">5:00 PM</div>
+                            <div class="activity-content">
+                                <div class="activity-title">Rooftop Pool Experience</div>
+                                <div class="activity-location">Rooftop</div>
+                                <div class="activity-description">
+                                    Relax at the only rooftop pool on the Westside with panoramic ocean views.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="contact-section p-5 mt-6">
+                    <h3 class="smp-header text-xs tracking-wide uppercase mb-3">
+                        Ready to Book Your Experience?
+                    </h3>
+                    <p class="smp-body text-xs leading-relaxed mb-4" style="color: #666666;">
+                        This is a sample of your personalized itinerary. Contact our wellness concierge to book your full experience.
+                    </p>
+                    <div class="flex flex-col gap-2">
+                        <div>
+                            <span class="smp-header text-xs uppercase tracking-wide" style="color: #000000;">Phone:</span>
+                            <span class="smp-body text-xs ml-2">(310) 620-9990</span>
+                        </div>
+                        <div>
+                            <span class="smp-header text-xs uppercase tracking-wide" style="color: #000000;">Email:</span>
+                            <span class="smp-body text-xs ml-2">wellness@properhotel.com</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('step-6').innerHTML = itineraryHTML;
+        }
+
+        function completeSurvey() {
+            saveCurrentStepData();
+            console.log('Survey completed! Final responses:', responses);
+            
+            // Format the survey data for email
+            const emailSubject = 'Wellness Survey Results - ' + responses.guestInfo.names;
+            const emailBody = formatSurveyForEmail();
+            
+            // Create mailto link
+            const mailtoLink = `mailto:wellness@properhotel.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Open email client
+            window.open(mailtoLink);
+            
+            // Show confirmation
+            alert('Thank you! Your survey results will open in your email client. Please send the email to complete your submission.');
+        }
+        
+        function formatSurveyForEmail() {
+            const { guestInfo, energyLevel, wellnessInterests, timingPreference, specialNotes } = responses;
+            
+            return `WELLNESS SURVEY RESULTS
+=============================
+
+GUEST INFORMATION:
+Name(s): ${guestInfo.names}
+Traveling with: ${guestInfo.partyType}
+Arrival Date: ${guestInfo.arrivalDate}
+Arrival Time: ${guestInfo.arrivalTime}
+Length of Stay: ${guestInfo.lengthOfStay} night(s)
+Departure Time: ${guestInfo.departureTime}
+Occasion: ${guestInfo.travelPurpose}
+
+WELLNESS PREFERENCES:
+Energy Level: ${energyLevel ? energyLevel.replace('-', ' ') : 'Not specified'}
+Interests: ${wellnessInterests.length > 0 ? wellnessInterests.join(', ') : 'Not specified'}
+Preferred Timing: ${timingPreference ? timingPreference.replace('-', ' ') : 'Not specified'}
+
+SPECIAL NOTES:
+${specialNotes || 'None provided'}
+
+=============================
+Please use this information to create a personalized wellness itinerary for the guest.`;
+        }
