@@ -15,12 +15,7 @@
         }
         
         /* Brand Fonts */
-        @font-face {
-            font-family: 'BentonSans-WideBold';
-            src: url('BentonSans-WideBold.otf') format('opentype');
-            font-weight: 800;
-            font-display: swap;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Crimson+Text:wght@400;600&display=swap');
         
         @font-face {
             font-family: 'ABCArizonaMix-Light';
@@ -30,12 +25,13 @@
         }
         
         .smp-header {
-            font-family: 'BentonSans-WideBold', 'Arial Black', sans-serif;
-            font-weight: 800;
+            font-family: 'ABCArizonaMix-Light', 'Crimson Text', Georgia, serif;
+            font-weight: 400;
+            letter-spacing: 0.08em;
         }
         
         .smp-body {
-            font-family: 'ABCArizonaMix-Light', 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'ABCArizonaMix-Light', 'Crimson Text', Georgia, serif;
             font-weight: 300;
         }
         
@@ -190,7 +186,7 @@
         <!-- Header -->
         <div class="px-6 pt-9 pb-5 text-center">
             <div class="text-center mb-5">
-                <h1 class="smp-body text-sm tracking-widest uppercase mb-1 font-semibold">
+                <h1 class="smp-body text-sm tracking-widest uppercase mb-1" style="font-weight: 400; color: #000000;">
                     WELLNESS EXPERIENCE SURVEY
                 </h1>
                 
@@ -226,7 +222,7 @@
             <div class="step-content active" id="step-1">
                 <div class="grid grid-cols-1 gap-5">
                     <div>
-                        <label class="smp-header block text-xs tracking-wide uppercase mb-2">
+                        <label class="smp-header block text-xs tracking-wide uppercase mb-2" style="font-weight: 400; color: #000000;">
                             Guest Name(s) *
                         </label>
                         <input
@@ -581,26 +577,39 @@
 
             // Hide all steps
             for (let i = 1; i <= totalSteps; i++) {
-                document.getElementById(`step-${i}`).classList.remove('active');
+                const stepElement = document.getElementById(`step-${i}`);
+                if (stepElement) {
+                    stepElement.classList.remove('active');
+                }
             }
 
             // Show current step
-            document.getElementById(`step-${currentStep}`).classList.add('active');
+            const currentStepElement = document.getElementById(`step-${currentStep}`);
+            if (currentStepElement) {
+                currentStepElement.classList.add('active');
+            }
 
             // Update navigation buttons
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const completeBtn = document.getElementById('complete-btn');
 
-            prevBtn.disabled = currentStep === 1;
+            if (prevBtn) {
+                prevBtn.disabled = currentStep === 1;
+                prevBtn.style.opacity = currentStep === 1 ? '0.5' : '1';
+            }
             
             if (currentStep === totalSteps) {
-                nextBtn.style.display = 'none';
-                completeBtn.style.display = 'block';
+                if (nextBtn) nextBtn.style.display = 'none';
+                if (completeBtn) completeBtn.style.display = 'block';
             } else {
-                nextBtn.style.display = 'block';
-                completeBtn.style.display = 'none';
-                nextBtn.disabled = !isStepComplete();
+                if (nextBtn) {
+                    nextBtn.style.display = 'block';
+                    const stepComplete = isStepComplete();
+                    nextBtn.disabled = !stepComplete;
+                    nextBtn.style.opacity = stepComplete ? '1' : '0.5';
+                }
+                if (completeBtn) completeBtn.style.display = 'none';
             }
         }
 
@@ -625,19 +634,25 @@
         }
 
         function nextStep() {
+            console.log('Next step clicked, current step:', currentStep);
             if (currentStep < totalSteps && isStepComplete()) {
                 saveCurrentStepData();
                 currentStep++;
+                console.log('Moving to step:', currentStep);
                 if (currentStep === totalSteps) {
                     generateItinerary();
                 }
                 updateStepDisplay();
+            } else {
+                console.log('Step not complete or already at last step');
             }
         }
 
         function prevStep() {
+            console.log('Previous step clicked, current step:', currentStep);
             if (currentStep > 1) {
                 currentStep--;
+                console.log('Moving to step:', currentStep);
                 updateStepDisplay();
             }
         }
@@ -717,23 +732,4 @@
                         Your Wellness Profile
                     </h3>
                     <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div>
-                            <span class="smp-header uppercase tracking-wide" style="color: #666666;">Energy Level:</span>
-                            <p class="smp-body mt-1 capitalize">
-                                ${energyLevel ? energyLevel.replace('-', ' ') : 'Not specified'}
-                            </p>
-                        </div>
-                        <div>
-                            <span class="smp-header uppercase tracking-wide" style="color: #666666;">Interests:</span>
-                            <p class="smp-body mt-1">
-                                ${interests.length > 0 ? interests.join(', ') : 'All areas'}
-                            </p>
-                        </div>
-                        <div>
-                            <span class="smp-header uppercase tracking-wide" style="color: #666666;">Group Type:</span>
-                            <p class="smp-body mt-1 capitalize">
-                                ${guestInfo.partyType || 'Not specified'}
-                            </p>
-                        </div>
-                        <div>
-                            <span class="smp-header uppercase tracking-wide" style="color
+                        <div
