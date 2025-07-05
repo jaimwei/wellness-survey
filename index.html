@@ -703,12 +703,13 @@
 
             // Outdoor & Beach Activities
             outdoorActivities: [
+                { time: '7:00 AM', title: 'Morning Beach Walk', location: 'Santa Monica Beach', description: 'Energizing sunrise walk along the shore to start your day with ocean views.', price: 'Complimentary', duration: 45, energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Meet at Lobby', interests: ['outdoor'] },
                 { time: '9:00 AM', title: 'Tennis Instruction', location: 'Top-Tier LA Courts', description: 'Elite personalized instruction with professional coaches for all skill levels. Available by appointment.', price: 'Additional fee', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve with Guest Relations', interests: ['outdoor'] },
                 { time: '11:00 AM', title: 'Pool Time & Relaxation', location: 'Pool Deck', description: 'Unwind at the rooftop pool with stunning ocean views (available during pool hours).', price: 'Complimentary', duration: 120, energyLevel: ['restorative', 'balanced'], bookingText: 'Walk-in Available', interests: ['outdoor'] },
                 { time: '2:00 PM', title: 'Padel Session', location: 'Padel Courts', description: 'Fastest-growing racquet sport blending tennis and squash. Private sessions available by appointment.', price: 'Additional fee', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve with Guest Relations', interests: ['outdoor'] },
                 { time: '3:00 PM', title: 'Beach Tennis with Ola', location: 'Santa Monica Beach', description: 'Hybrid sport combining tennis control with beach volleyball movement for high-energy, full-body workout.', price: 'Additional fee', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Book Beach Tennis', interests: ['outdoor'] },
                 { time: '5:30 PM', title: 'Sunset Rooftop Yoga', location: 'Pool Deck', description: 'Evening yoga practice with panoramic ocean and city views.', price: 'Complimentary', duration: 60, energyLevel: ['restorative', 'balanced'], bookingText: 'Book with Concierge', interests: ['outdoor'] },
-                { time: '6:30 PM', title: 'Beach Sunset Walk', location: 'Santa Monica Beach', description: 'Guided mindful walk along the shore during golden hour.', price: 'Complimentary', duration: 45, energyLevel: ['restorative', 'balanced'], bookingText: 'Meet at Lobby', interests: ['outdoor'] }
+                { time: '6:30 PM', title: 'Sunset Beach Walk', location: 'Santa Monica Beach', description: 'Guided mindful walk along the shore during golden hour.', price: 'Complimentary', duration: 45, energyLevel: ['restorative', 'balanced'], bookingText: 'Meet at Lobby', interests: ['outdoor'] }
             ],
 
             // Dining experiences with proper timing
@@ -981,6 +982,42 @@
             
             const itineraryHTML = generateFullItinerary(numDays);
             
+            // Format dates and times for display
+            const arrivalDate = new Date(surveyData.arrivalDate);
+            const departureDate = new Date(arrivalDate);
+            departureDate.setDate(arrivalDate.getDate() + numDays);
+            
+            const formatDate = (date) => {
+                return date.toLocaleDateString('en-US', { 
+                    weekday: 'long',
+                    month: 'long', 
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            };
+            
+            const formatArrivalTime = (timeCode) => {
+                const timeMap = {
+                    'early-morning': 'Early Morning (6-9 AM)',
+                    'morning': 'Morning (9 AM-12 PM)',
+                    'afternoon': 'Afternoon (12-4 PM)',
+                    'evening': 'Evening (4-8 PM)',
+                    'late-evening': 'Late Evening (8 PM+)'
+                };
+                return timeMap[timeCode] || 'Not specified';
+            };
+            
+            const formatDepartureTime = (timeCode) => {
+                const timeMap = {
+                    'early-morning': 'Early Morning (6-9 AM)',
+                    'morning': 'Morning (9 AM-12 PM)',
+                    'afternoon': 'Afternoon (12-4 PM)',
+                    'evening': 'Evening (4-8 PM)',
+                    'flexible': 'Flexible/Late Checkout'
+                };
+                return timeMap[timeCode] || 'Not specified';
+            };
+            
             resultsContainer.innerHTML = 
                 '<div class="profile-summary p-5 mb-6">' +
                 '<h3 class="smp-header text-sm tracking-wide uppercase mb-3">Your Wellness Profile</h3>' +
@@ -992,6 +1029,15 @@
                 '<div><strong>Interests:</strong> ' + surveyData.interests.join(', ') + '</div>' +
                 '<div><strong>Preferred Timing:</strong> ' + surveyData.timing + '</div>' +
                 (surveyData.notes ? '<div><strong>Notes:</strong> ' + surveyData.notes + '</div>' : '') +
+                '</div>' +
+                '</div>' +
+                '<div class="profile-summary p-5 mb-6">' +
+                '<h3 class="smp-header text-sm tracking-wide uppercase mb-3">Stay Details</h3>' +
+                '<div class="grid gap-2 text-xs">' +
+                '<div><strong>Check-in:</strong> ' + formatDate(arrivalDate) + '</div>' +
+                '<div><strong>Arrival Time:</strong> ' + formatArrivalTime(surveyData.arrivalTime) + '</div>' +
+                '<div><strong>Check-out:</strong> ' + formatDate(departureDate) + '</div>' +
+                '<div><strong>Departure Time:</strong> ' + formatDepartureTime(surveyData.departureTime) + '</div>' +
                 '</div>' +
                 '</div>' +
                 itineraryHTML +
@@ -1271,6 +1317,18 @@
                     properClubDays.add(day);
                 }
                 
+                // 6:30 PM - Add evening beach walk for outdoor enthusiasts
+                if (interests.includes('outdoor')) {
+                    dayActivities.push({
+                        time: '6:30 PM',
+                        title: 'Sunset Beach Walk',
+                        location: 'Santa Monica Beach',
+                        description: 'Guided mindful walk along the shore during golden hour.',
+                        price: 'Complimentary',
+                        bookingText: 'Meet at Lobby'
+                    });
+                }
+                
                 // 7:30 PM - Dinner
                 dayActivities.push({
                     time: '7:30 PM',
@@ -1369,7 +1427,10 @@
             descriptionEl.textContent = description;
             
             const bookingInfo = bookingText ? ` • ${bookingText}` : '';
-            priceEl.textContent = `${price}${bookingInfo}`;
+            const priceDisplay = price + bookingInfo;
+            // Remove trailing " •" if no booking text
+            const cleanPriceDisplay = priceDisplay.endsWith(' •') ? price : priceDisplay;
+            priceEl.textContent = cleanPriceDisplay;
             
             // Hide swap options
             element.closest('.swap-options').classList.remove('active');
