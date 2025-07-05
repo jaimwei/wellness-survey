@@ -713,7 +713,7 @@
 
             // Dining experiences with proper timing
             diningActivities: [
-                { timeRange: '7:00 AM-11:00 AM', title: 'Morning Coffee & Tea Service', location: 'Canela Lounge - Ground Floor', description: 'Complimentary Counter Culture Coffee and artisanal tea service to start your day.', price: 'Complimentary', duration: 30, mealType: 'coffee', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Walk-in Available', interests: ['dining'] },
+                { timeRange: '7:00 AM-11:00 AM', title: 'Morning Coffee & Tea Service', location: 'Canela Lounge - Ground Floor', description: 'Counter Culture Coffee and artisanal tea service to start your day.', price: 'Complimentary', duration: 30, mealType: 'coffee', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: '', interests: ['dining'] },
                 { timeRange: '7:00 AM-11:00 AM', title: 'Wellness Breakfast at Palma', location: 'Palma Restaurant', description: 'Greek Goddess Yogurt Parfait, Sprouted Overnight Oats, or Avocado Toast with fresh market fruit.', price: 'Available', duration: 45, mealType: 'breakfast', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
                 { timeRange: '10:00 AM-11:00 AM', title: 'Surya Spa Ayurvedic Lattes', location: 'Palma Restaurant', description: 'Brainpower Latte, Whole Body Energy Latte, or Mighty Turmeric Latte crafted by Surya Spa.', price: 'Available', duration: 20, mealType: 'beverage', energyLevel: ['balanced', 'restorative'], bookingText: 'Walk-in Available', interests: ['dining'] },
                 { timeRange: '12:00 PM-3:00 PM', title: 'Healthy Lunch at Palma', location: 'Palma Restaurant', description: 'Farmers Market Salad, Kale Pesto, or Pan Seared Salmon with Mediterranean-inspired sides.', price: 'Available', duration: 60, mealType: 'lunch', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
@@ -929,9 +929,47 @@
             return days[date.getDay()];
         }
 
-        // Enhanced itinerary generation with algorithm rules
+        // Enhanced itinerary generation with algorithm rules and loading
         function generateWellnessItinerary() {
             const resultsContainer = document.getElementById('step-6');
+            
+            // Show loading state
+            resultsContainer.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="loading-spinner mx-auto mb-6"></div>
+                    <h3 class="smp-header text-sm tracking-wide uppercase mb-3">Creating Your Personalized Itinerary</h3>
+                    <p class="smp-body text-xs leading-relaxed" style="color: #666666;">
+                        Analyzing your preferences and optimizing your wellness experience...
+                    </p>
+                </div>
+            `;
+            
+            // Add loading spinner CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                .loading-spinner {
+                    width: 40px;
+                    height: 40px;
+                    border: 3px solid rgba(0, 0, 0, 0.1);
+                    border-top: 3px solid #000000;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Wait 5 seconds then generate the actual itinerary
+            setTimeout(() => {
+                generateActualItinerary(resultsContainer);
+            }, 5000);
+        }
+        
+        function generateActualItinerary(resultsContainer) {
             let numDays = parseInt(surveyData.lengthOfStay) || 2;
             if (surveyData.lengthOfStay === '6-7') numDays = 6;
             if (surveyData.lengthOfStay === 'week+') numDays = 7;
@@ -1023,9 +1061,9 @@
                     time: '7:30 AM',
                     title: 'Morning Coffee & Tea Service',
                     location: 'Canela Lounge - Ground Floor',
-                    description: 'Complimentary Counter Culture Coffee and artisanal tea service to start your day.',
+                    description: 'Counter Culture Coffee and artisanal tea service to start your day.',
                     price: 'Complimentary',
-                    bookingText: 'Walk-in Available'
+                    bookingText: ''
                 });
                 
                 // 8:00 AM - Add fitness class if available for this day
@@ -1329,7 +1367,9 @@
             titleEl.textContent = title;
             locationEl.textContent = location;
             descriptionEl.textContent = description;
-            priceEl.textContent = `${price} • ${bookingText}`;
+            
+            const bookingInfo = bookingText ? ` • ${bookingText}` : '';
+            priceEl.textContent = `${price}${bookingInfo}`;
             
             // Hide swap options
             element.closest('.swap-options').classList.remove('active');
