@@ -113,22 +113,23 @@
         }
         
         .btn-primary {
-            background-color: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            color: #000000;
+            background-color: #000000;
+            border: 1px solid #000000;
+            color: #f4f2f0;
             transition: all 0.2s ease;
             cursor: pointer;
         }
         
         .btn-primary:hover:not(:disabled) {
-            background-color: #000000;
-            color: #f4f2f0;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #000000;
         }
         
         .btn-primary:disabled {
             background-color: rgba(255, 255, 255, 0.3);
             color: #999999;
             cursor: not-allowed;
+            opacity: 0.5;
         }
         
         input, select, textarea {
@@ -619,8 +620,6 @@
     </div>
 
     <script>
-        console.log('=== WELLNESS SURVEY STARTING ===');
-        
         // Global survey state
         let currentStep = 1;
         const totalSteps = 6;
@@ -721,12 +720,11 @@
                 { time: '4:30 PM', title: 'Ayurvedic Cooking Class', location: 'Surya Spa', description: 'Learn to prepare dosha-specific meals and healing foods with Martha\'s expert guidance.', price: 'Additional fee (15% off)', bookingLink: 'https://na.spatime.com/susp401/4826280/home', bookingText: 'Book at Surya Spa' }
             ],
             recovery: [
-                { time: '7:00 AM', title: '60-Minute Recovery Suite', location: 'Recovery Center', description: 'Fully immersive wellness experience with 25-minute Ammortal Chamber (breathwork/meditation using light, sound, vibration), dry sauna, cold plunge, Joovv red light therapy, Theraboots compression, and Theraguns. Arrive 5-10 minutes early.', price: '$245 (+$45 per additional guest)', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
-                { time: '9:00 AM', title: '90-Minute Recovery Suite', location: 'Recovery Center', description: 'Extended recovery session with 25 or 50-minute Ammortal Chamber experience, dry sauna detoxification, cold plunge therapy, full-body red light therapy wall, compression therapy, and targeted percussive massage.', price: '$345 (+$45 per additional guest)', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
-                { time: '1:00 PM', title: 'Ammortal Chamber Add-On', location: 'Recovery Center', description: 'Additional 25-minute next-generation breathwork and meditation experience using light, sound, and vibration for deep mental clarity and balance.', price: '+$50 (with Recovery Suite)', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
-                { time: '3:00 PM', title: 'Cold Plunge Therapy', location: 'Recovery Center', description: 'Invigorating cold therapy to reduce inflammation, boost circulation, and elevate mood as part of contrast therapy protocol.', price: 'Included in Recovery Suite', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
-                { time: '5:00 PM', title: 'Dry Sauna & Red Light Session', location: 'Recovery Center', description: 'Detoxifying dry sauna combined with Joovv full-body red light therapy wall for cellular regeneration and skin health.', price: 'Included in Recovery Suite', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
-                { time: '6:00 PM', title: 'Compression & Percussive Therapy', location: 'Recovery Center', description: 'Theraboots compression therapy and Theraguns percussive massage to stimulate blood flow, relieve fatigue, and improve mobility.', price: 'Included in Recovery Suite', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' }
+                { time: '7:00 AM', title: '60-Minute Recovery Suite', location: 'Recovery Suite', description: 'Fully immersive wellness experience with 25-minute Ammortal Chamber (breathwork/meditation using light, sound, vibration), dry sauna, cold plunge, Joovv red light therapy, Theraboots compression, and Theraguns. Arrive 5-10 minutes early.', price: '$245 (+$45 per additional guest)', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
+                { time: '9:00 AM', title: '90-Minute Recovery Suite', location: 'Recovery Suite', description: 'Extended recovery session with 50-minute Ammortal Chamber experience, dry sauna detoxification, cold plunge therapy, full-body red light therapy wall, compression therapy, and targeted percussive massage.', price: '$345 (+$45 per additional guest)', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
+                { time: '3:00 PM', title: 'Cold Plunge Therapy', location: 'Recovery Suite', description: 'Invigorating cold therapy to reduce inflammation, boost circulation, and elevate mood as part of contrast therapy protocol.', price: 'Included in Recovery Suite', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
+                { time: '5:00 PM', title: 'Dry Sauna & Red Light Session', location: 'Recovery Suite', description: 'Detoxifying dry sauna combined with Joovv full-body red light therapy wall for cellular regeneration and skin health.', price: 'Included in Recovery Suite', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' },
+                { time: '6:00 PM', title: 'Compression & Percussive Therapy', location: 'Recovery Suite', description: 'Theraboots compression therapy and Theraguns percussive massage to stimulate blood flow, relieve fatigue, and improve mobility.', price: 'Included in Recovery Suite', bookingLink: 'tel:+13106209990', bookingText: 'Reserve Recovery Suite' }
             ],
             outdoor: [
                 { time: '10:00 AM', title: 'Private Tennis Coaching', location: 'Top-Tier LA Courts', description: 'Elite personalized instruction with Jason Alabaster for all skill levels. Available by appointment.', price: 'Additional fee', bookingLink: 'mailto:smp.guestrelations@properhotel.com?subject=Reserve%20Private%20Tennis%20Coaching', bookingText: 'Reserve with Guest Relations' },
@@ -751,10 +749,8 @@
                 { time: '7:30 PM', title: 'Conscious Dinner at Calabra', location: 'Calabra Restaurant', description: 'Pan Seared Salmon, Crispy Eggplant Schnitzel, or Whole Roasted Branzino with Mediterranean flavors.', price: 'Hotel restaurant', bookingLink: 'https://www.opentable.com/r/calabra-at-santa-monica-proper-santa-monica', bookingText: 'Reserve on OpenTable' }
             ],
             properClub: [
-                { time: '7:00 AM', title: 'PC Lounge - Morning Contrast Therapy', location: 'Proper Club Lounge', description: 'Start your day with cold plunges at varying temperatures, private dry saunas (2-person and 6-person), and infrared sauna access.', price: '$195/day access', bookingLink: 'tel:+13106209990', bookingText: 'Join Proper Club' },
-                { time: '10:00 AM', title: 'PC Lounge - Mid-Morning Reset', location: 'Proper Club Lounge', description: 'Tranquil wellness session with contrast therapy, Surya tea service, and peaceful lounge relaxation.', price: '$195/day access', bookingLink: 'tel:+13106209990', bookingText: 'Join Proper Club' },
-                { time: '1:00 PM', title: 'PC Lounge - Afternoon Recharge', location: 'Proper Club Lounge', description: 'Post-activity recovery with full contrast therapy protocol, private showers, and serene lounge atmosphere.', price: '$195/day access', bookingLink: 'tel:+13106209990', bookingText: 'Join Proper Club' },
-                { time: '4:00 PM', title: 'PC Lounge - Evening Wind-Down', location: 'Proper Club Lounge', description: 'Gentle contrast therapy, infrared sauna session, Surya tea service, and peaceful preparation for dinner.', price: '$195/day access', bookingLink: 'tel:+13106209990', bookingText: 'Join Proper Club' }
+                { time: '7:00 AM', title: 'Proper Club Lounge - Morning Contrast Therapy', location: 'Proper Club Lounge', description: 'Start your day with cold plunges at varying temperatures, private dry saunas (2-person and 6-person), and infrared sauna access.', price: '$195/day access', bookingLink: 'tel:+13106209990', bookingText: 'Purchase Day Pass' },
+                { time: '10:00 AM', title: 'Proper Club Lounge - Mid-Morning Reset', location: 'Proper Club Lounge', description: 'Tranquil wellness session with contrast therapy, Surya tea service, and peaceful lounge relaxation.', price: '$195/day access', bookingLink: 'tel:+13106209990', bookingText: 'Purchase Day Pass' }
             ],
             movement: [
                 { time: '10:00 AM', title: 'VO2 Max Testing Session', location: 'Performance Lab - Fitness Center', description: 'Professional VO2 max test measuring maximal oxygen uptake for cardiovascular fitness assessment. Includes treadmill test with metabolic cart, digital report with training zones, and performance graphs. Plan 20 minutes total. Wear workout clothes.', price: '$150', bookingLink: 'tel:+14242441729', bookingText: 'Book VO2 Testing' },
@@ -763,238 +759,95 @@
             ]
         };
 
-        // Initialization
-        function initializeSurvey() {
-            console.log('Initializing survey...');
-            setupStep1Listeners();
-            setupStep2Listeners();
-            setupStep3Listeners();
-            setupStep4Listeners();
-            setupStep5Listeners();
-            setupNavigationListeners();
-            
-            // Initial display update
-            updateDisplay();
-            
-            // Initial validation check
-            setTimeout(() => { 
-                isCurrentStepValid(); 
-                console.log('Survey initialized');
-            }, 100);
-        }
-
-        function setupNavigationListeners() {
-            const nextBtn = document.getElementById('next-btn');
-            const prevBtn = document.getElementById('prev-btn');
-            const completeBtn = document.getElementById('complete-btn');
-            
-            if (nextBtn) {
-                nextBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log('Next button clicked');
-                    goToNextStep();
-                });
-            }
-            
-            if (prevBtn) {
-                prevBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log('Previous button clicked');
-                    goToPreviousStep();
-                });
-            }
-            
-            if (completeBtn) {
-                completeBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    completeSurvey();
-                });
-            }
-        }
-
-        function setupStep1Listeners() {
-            const step1Fields = ['guest-names', 'party-type', 'arrival-date', 'length-of-stay'];
-            step1Fields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    field.addEventListener('input', checkStep1);
-                    field.addEventListener('change', checkStep1);
-                }
-            });
-        }
-
-        function setupStep2Listeners() {
-            const step2Cards = document.querySelectorAll('#step-2 .option-card');
-            step2Cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    step2Cards.forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    surveyData.energyLevel = card.getAttribute('data-value');
-                    isCurrentStepValid();
-                });
-            });
-        }
-
-        function setupStep3Listeners() {
-            const step3Cards = document.querySelectorAll('#step-3 .option-card');
-            step3Cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const value = card.getAttribute('data-value');
-                    if (card.classList.contains('selected')) {
-                        card.classList.remove('selected');
-                        surveyData.interests = surveyData.interests.filter(item => item !== value);
-                    } else {
-                        card.classList.add('selected');
-                        if (surveyData.interests.indexOf(value) === -1) {
-                            surveyData.interests.push(value);
-                        }
-                    }
-                    isCurrentStepValid();
-                });
-            });
-        }
-
-        function setupStep4Listeners() {
-            const step4Cards = document.querySelectorAll('#step-4 .option-card');
-            step4Cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    step4Cards.forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    surveyData.timing = card.getAttribute('data-value');
-                    isCurrentStepValid();
-                });
-            });
-        }
-
-        function setupStep5Listeners() {
-            const notesField = document.getElementById('special-notes');
-            if (notesField) {
-                notesField.addEventListener('input', () => {
-                    surveyData.notes = notesField.value;
-                });
-            }
-        }
-
-        // Step validation
-        function checkStep1() {
-            const name = document.getElementById('guest-names').value.trim();
-            const party = document.getElementById('party-type').value;
-            const arrival = document.getElementById('arrival-date').value;
-            const length = document.getElementById('length-of-stay').value;
-            const isValid = name && party && arrival && length;
-            updateNextButton(isValid);
-            return isValid;
-        }
-
-        function isCurrentStepValid() {
-            let isValid = false;
-            switch (currentStep) {
-                case 1: 
-                    isValid = checkStep1();
-                    break;
-                case 2: 
-                    isValid = surveyData.energyLevel !== '';
-                    break;
-                case 3:
-                    isValid = surveyData.interests.length > 0;
-                    break;
-                case 4:
-                    isValid = surveyData.timing !== '';
-                    break;
-                case 5:
-                case 6:
-                    isValid = true;
-                    break;
-                default:
-                    isValid = true;
-                    break;
-            }
-            updateNextButton(isValid);
-            return isValid;
-        }
-
-        function updateNextButton(isValid) {
-            const nextBtn = document.getElementById('next-btn');
-            if (nextBtn && currentStep < totalSteps) {
-                nextBtn.disabled = !isValid;
-                nextBtn.style.opacity = isValid ? '1' : '0.5';
-            }
-        }
-
-        // Navigation
+        // Navigation functions
         function goToNextStep() {
-            console.log('goToNextStep called, currentStep:', currentStep);
-            if (currentStep >= totalSteps) {
-                console.log('Already at last step');
-                return;
-            }
+            if (currentStep >= totalSteps) return;
+            
             if (!isCurrentStepValid()) {
                 alert('Please complete all required fields before proceeding.');
                 return;
             }
+            
             saveCurrentStepData();
             currentStep++;
-            console.log('Moving to step:', currentStep);
+            
             if (currentStep === totalSteps) {
                 generateWellnessItinerary();
             }
+            
             updateDisplay();
         }
 
         function goToPreviousStep() {
-            console.log('goToPreviousStep called, currentStep:', currentStep);
-            if (currentStep <= 1) {
-                console.log('Already at first step');
-                return;
-            }
+            if (currentStep <= 1) return;
+            
             currentStep--;
-            console.log('Moving to step:', currentStep);
             updateDisplay();
-            setTimeout(() => { isCurrentStepValid(); }, 100);
         }
 
         function updateDisplay() {
-            console.log('updateDisplay called, currentStep:', currentStep);
-            
             // Update step indicators
             document.getElementById('current-step').textContent = currentStep;
             document.getElementById('total-steps').textContent = totalSteps;
             document.getElementById('step-title').textContent = stepTitles[currentStep - 1];
             
             // Show/hide step content
-            for (let i = 1; i <= totalSteps; i++) {
-                const stepElement = document.getElementById('step-' + i);
-                if (stepElement) {
-                    if (i === currentStep) {
-                        stepElement.classList.add('active');
-                    } else {
-                        stepElement.classList.remove('active');
-                    }
+            document.querySelectorAll('.step-content').forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
                 }
-            }
+            });
             
             // Update navigation buttons
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const completeBtn = document.getElementById('complete-btn');
             
-            if (prevBtn) {
-                prevBtn.disabled = currentStep === 1;
-                prevBtn.style.opacity = currentStep === 1 ? '0.5' : '1';
-            }
+            // Previous button
+            prevBtn.disabled = currentStep === 1;
             
+            // Next/Complete buttons
             if (currentStep === totalSteps) {
-                if (nextBtn) nextBtn.style.display = 'none';
-                if (completeBtn) completeBtn.style.display = 'block';
+                nextBtn.style.display = 'none';
+                completeBtn.style.display = 'block';
             } else {
-                if (nextBtn) nextBtn.style.display = 'block';
-                if (completeBtn) completeBtn.style.display = 'none';
-                setTimeout(() => {
-                    isCurrentStepValid();
-                }, 100);
+                nextBtn.style.display = 'block';
+                completeBtn.style.display = 'none';
+                
+                // Validate current step and update next button
+                const isValid = isCurrentStepValid();
+                nextBtn.disabled = !isValid;
             }
+        }
+
+        // Validation functions
+        function isCurrentStepValid() {
+            switch (currentStep) {
+                case 1:
+                    return checkStep1();
+                case 2:
+                    return surveyData.energyLevel !== '';
+                case 3:
+                    return surveyData.interests.length > 0;
+                case 4:
+                    return surveyData.timing !== '';
+                case 5:
+                case 6:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        function checkStep1() {
+            const name = document.getElementById('guest-names').value.trim();
+            const party = document.getElementById('party-type').value;
+            const arrival = document.getElementById('arrival-date').value;
+            const length = document.getElementById('length-of-stay').value;
             
-            console.log('Display updated for step:', currentStep);
+            return name && party && arrival && length;
         }
 
         function saveCurrentStepData() {
@@ -1014,13 +867,84 @@
             }
         }
 
+        // Setup event listeners for each step
+        function setupStep1Listeners() {
+            const fields = ['guest-names', 'party-type', 'arrival-date', 'length-of-stay'];
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', updateDisplay);
+                    field.addEventListener('change', updateDisplay);
+                }
+            });
+        }
+
+        function setupStep2Listeners() {
+            const cards = document.querySelectorAll('#step-2 .option-card');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Clear previous selections
+                    cards.forEach(c => c.classList.remove('selected'));
+                    // Select current card
+                    card.classList.add('selected');
+                    surveyData.energyLevel = card.getAttribute('data-value');
+                    updateDisplay();
+                });
+            });
+        }
+
+        function setupStep3Listeners() {
+            const cards = document.querySelectorAll('#step-3 .option-card');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const value = card.getAttribute('data-value');
+                    
+                    if (card.classList.contains('selected')) {
+                        // Deselect
+                        card.classList.remove('selected');
+                        surveyData.interests = surveyData.interests.filter(item => item !== value);
+                    } else {
+                        // Select
+                        card.classList.add('selected');
+                        if (!surveyData.interests.includes(value)) {
+                            surveyData.interests.push(value);
+                        }
+                    }
+                    updateDisplay();
+                });
+            });
+        }
+
+        function setupStep4Listeners() {
+            const cards = document.querySelectorAll('#step-4 .option-card');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Clear previous selections
+                    cards.forEach(c => c.classList.remove('selected'));
+                    // Select current card
+                    card.classList.add('selected');
+                    surveyData.timing = card.getAttribute('data-value');
+                    updateDisplay();
+                });
+            });
+        }
+
+        function setupStep5Listeners() {
+            const notesField = document.getElementById('special-notes');
+            if (notesField) {
+                notesField.addEventListener('input', () => {
+                    surveyData.notes = notesField.value;
+                });
+            }
+        }
+
         // Helper function to get day of week
         function getDayOfWeek(date) {
             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             return days[date.getDay()];
         }
 
-        // Improved Results generation
+        // Generate wellness itinerary
         function generateWellnessItinerary() {
             const resultsContainer = document.getElementById('step-6');
             let numDays = parseInt(surveyData.lengthOfStay) || 2;
@@ -1144,6 +1068,16 @@
             // Create time slots based on preferences and realistic spacing
             const timeSlots = getTimeSlots(day, totalDays, numActivities);
             
+            // Track high-value activities across entire stay (not just daily)
+            if (!window.stayTracker) {
+                window.stayTracker = {
+                    usedProperClub: false,
+                    usedRecoverySuite: false,
+                    usedSpaService: false,
+                    dayActivity: {}
+                };
+            }
+            
             for (let i = 0; i < numActivities; i++) {
                 const timeSlot = timeSlots[i];
                 const activity = selectActivityForTimeSlot(timeSlot, interests, usedActivities, day, i, dayOfWeek);
@@ -1153,6 +1087,17 @@
                     activity.time = timeSlot.time;
                     schedule.push(activity);
                     usedActivities.push(activity.title);
+                    
+                    // Track usage of premium services
+                    if (activity.location.includes('Proper Club Lounge')) {
+                        window.stayTracker.usedProperClub = true;
+                    }
+                    if (activity.location.includes('Recovery Suite')) {
+                        window.stayTracker.usedRecoverySuite = true;
+                    }
+                    if (activity.location.includes('Surya Spa')) {
+                        window.stayTracker.usedSpaService = true;
+                    }
                 }
             }
             
@@ -1462,7 +1407,197 @@
 
         // Utility functions for PDF and email
         function downloadPDF() {
-            alert('PDF download functionality would be implemented with a PDF generation library.');
+            // Create a styled HTML version for download
+            let htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Santa Monica Proper - Wellness Itinerary</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f4f2f0;
+            color: #000;
+            line-height: 1.6;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 20px;
+        }
+        .hotel-name {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 18px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .profile {
+            background: rgba(255,255,255,0.8);
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #000;
+        }
+        .profile h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 12px;
+        }
+        .day-section {
+            margin-bottom: 40px;
+            background: rgba(255,255,255,0.8);
+            border: 1px solid #000;
+        }
+        .day-header {
+            background: #000;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .activity {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+        }
+        .activity:last-child {
+            border-bottom: none;
+        }
+        .activity-time {
+            font-size: 11px;
+            font-weight: bold;
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .activity-content {
+            flex: 1;
+        }
+        .activity-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .activity-location {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .activity-description {
+            font-size: 11px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .activity-price {
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+            font-size: 12px;
+        }
+        @media print {
+            body { background: white; }
+            .day-section, .profile { background: white; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="hotel-name">Santa Monica Proper</div>
+        <div class="title">Personalized Wellness Itinerary</div>
+    </div>
+
+    <div class="profile">
+        <h3>Your Wellness Profile</h3>
+        <div class="profile-grid">
+            <div><strong>Guest(s):</strong> ${surveyData.names}</div>
+            <div><strong>Party Type:</strong> ${surveyData.partyType}</div>
+            <div><strong>Stay Duration:</strong> ${surveyData.lengthOfStay} night(s)</div>
+            <div><strong>Energy Level:</strong> ${surveyData.energyLevel}</div>
+            <div><strong>Interests:</strong> ${surveyData.interests.join(', ')}</div>
+            <div><strong>Preferred Timing:</strong> ${surveyData.timing}</div>
+            ${surveyData.notes ? `<div style="grid-column: 1 / -1;"><strong>Notes:</strong> ${surveyData.notes}</div>` : ''}
+        </div>
+    </div>
+`;
+
+            // Get itinerary content
+            const dayContainers = document.querySelectorAll('.day-container');
+            dayContainers.forEach(container => {
+                const dayHeader = container.querySelector('.day-header h3').textContent;
+                htmlContent += `
+    <div class="day-section">
+        <div class="day-header">${dayHeader}</div>
+`;
+                
+                const activities = container.querySelectorAll('.activity-item');
+                activities.forEach(activity => {
+                    const time = activity.querySelector('.activity-time').textContent;
+                    const title = activity.querySelector('.activity-title').textContent;
+                    const location = activity.querySelector('.activity-location').textContent;
+                    const description = activity.querySelector('.activity-description').textContent;
+                    const price = activity.querySelector('.text-xs.mt-2').textContent;
+                    
+                    htmlContent += `
+        <div class="activity">
+            <div class="activity-time">${time}</div>
+            <div class="activity-content">
+                <div class="activity-title">${title}</div>
+                <div class="activity-location">${location}</div>
+                <div class="activity-description">${description}</div>
+                <div class="activity-price">${price}</div>
+            </div>
+        </div>
+`;
+                });
+                htmlContent += `    </div>\n`;
+            });
+
+            htmlContent += `
+    <div class="footer">
+        <p><strong>Questions?</strong> Contact our wellness team at <strong>wellness@properhotel.com</strong></p>
+        <p>Santa Monica Proper Hotel | 700 Wilshire Blvd, Santa Monica, CA 90401</p>
+    </div>
+</body>
+</html>`;
+
+            // Create downloadable HTML file
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Santa_Monica_Proper_Wellness_Itinerary.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
         }
 
         function emailItinerary() {
@@ -1472,11 +1607,43 @@
             }
         }
 
-        function completeSurvey() {
-            alert('Survey completed! Your personalized wellness itinerary is ready.');
+        // Initialize survey
+        function initializeSurvey() {
+            // Setup all step listeners
+            setupStep1Listeners();
+            setupStep2Listeners();
+            setupStep3Listeners();
+            setupStep4Listeners();
+            setupStep5Listeners();
+            
+            // Setup navigation
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const completeBtn = document.getElementById('complete-btn');
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', goToNextStep);
+            }
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', goToPreviousStep);
+            }
+            
+            if (completeBtn) {
+                completeBtn.addEventListener('click', () => {
+                    alert('Survey completed! Your personalized wellness itinerary is ready.');
+                });
+            }
+            
+            // Initial display update
+            updateDisplay();
         }
 
-        // Initialize the survey when page loads
+        // Make functions globally available
+        window.downloadPDF = downloadPDF;
+        window.emailItinerary = emailItinerary;
+
+        // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', initializeSurvey);
     </script>
 </body>
