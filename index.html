@@ -222,6 +222,12 @@
             margin-top: 10px;
             max-height: 200px;
             overflow-y: auto;
+            position: absolute;
+            right: 0;
+            top: 30px;
+            min-width: 300px;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .swap-options.active {
@@ -598,6 +604,7 @@
             <button
                 id="prev-btn"
                 class="btn-primary smp-body px-4 py-2 text-xs tracking-wide uppercase"
+                onclick="goToPreviousStep()"
             >
                 Previous
             </button>
@@ -605,6 +612,7 @@
             <button
                 id="next-btn"
                 class="btn-primary smp-body px-4 py-2 text-xs tracking-wide uppercase"
+                onclick="goToNextStep()"
             >
                 Next
             </button>
@@ -613,6 +621,7 @@
                 id="complete-btn"
                 class="btn-primary smp-body px-4 py-2 text-xs tracking-wide uppercase"
                 style="display: none;"
+                onclick="downloadPDF()"
             >
                 Download Itinerary
             </button>
@@ -651,99 +660,89 @@
             // Fitness Classes (exact schedule enforcement)
             fitnessClasses: {
                 'Monday': [
-                    { time: '8:00 AM', title: 'HIIT', location: 'Helios Studio', description: 'High-intensity interval training combining cardio and strength movements for maximum results.', price: 'Complimentary', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Book at Front Desk' },
-                    { time: '4:00 PM', title: 'Flow Yoga', location: 'Helios Studio', description: 'Dynamic sequences connecting breath and movement in a flowing practice.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'restorative'], bookingText: 'Book at Front Desk' }
+                    { time: '8:00 AM', title: 'HIIT', location: 'Helios Studio', description: 'High-intensity interval training combining cardio and strength movements for maximum results.', price: 'Complimentary', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/hiit-class-tickets-1345494964659?aff=oddtdtcreator', swappable: true },
+                    { time: '4:00 PM', title: 'Flow Yoga', location: 'Helios Studio', description: 'Dynamic sequences connecting breath and movement in a flowing practice.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/flow-yoga-tickets-1345491484249?aff=oddtdtcreator', swappable: true }
                 ],
                 'Tuesday': [
-                    { time: '8:00 AM', title: 'Vinyasa Yoga', location: 'Helios Studio', description: 'Energizing flow-based yoga linking postures with mindful breathing.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Book at Front Desk' },
-                    { time: '6:30 PM', title: 'Yoga Flow & Chill', location: 'Helios Studio', description: 'A relaxing evening yoga flow that combines gentle movement with restorative poses for deep relaxation.', price: 'Complimentary', duration: 60, energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Front Desk' }
+                    { time: '8:00 AM', title: 'Vinyasa Yoga', location: 'Helios Studio', description: 'Energizing flow-based yoga linking postures with mindful breathing.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/vinyasa-yoga-tickets-1345496980689?aff=oddtdtcreator', swappable: true },
+                    { time: '6:30 PM', title: 'Yoga Flow & Chill', location: 'Helios Studio', description: 'A relaxing evening yoga flow that combines gentle movement with restorative poses for deep relaxation.', price: 'Complimentary', duration: 60, energyLevel: ['restorative', 'balanced'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/yoga-flow-chill-tickets-1442640178609?aff=oddtdtcreator', swappable: true }
                 ],
                 'Wednesday': [
-                    { time: '7:30 AM', title: 'Proper Run Club', location: 'Paseo', description: 'Guided running sessions exploring Santa Monica\'s scenic coastal routes.', price: 'Complimentary', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Book at Front Desk' },
-                    { time: '8:00 AM', title: 'Mat Pilates', location: 'Helios Studio', description: 'Core-strengthening exercises emphasizing precision, control, and alignment.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Book at Front Desk' },
-                    { time: '10:00 AM', title: 'Yoga Sculpt', location: 'Helios Studio', description: 'Yoga combined with light weights for strength building and toning.', price: 'Complimentary', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Book at Front Desk' }
+                    { time: '7:30 AM', title: 'Proper Run Club', location: 'Paseo', description: 'Guided running sessions exploring Santa Monica\'s scenic coastal routes.', price: 'Complimentary', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/proper-run-club-tickets-1364483429669?aff=oddtdtcreator', swappable: true },
+                    { time: '8:00 AM', title: 'Mat Pilates', location: 'Helios Studio', description: 'Core-strengthening exercises emphasizing precision, control, and alignment.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/mat-pilates-tickets-1304652182799?aff=oddtdtcreator', swappable: true },
+                    { time: '10:00 AM', title: 'Yoga Sculpt', location: 'Helios Studio', description: 'Yoga combined with light weights for strength building and toning.', price: 'Complimentary', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/yoga-sculpt-tickets-1350581308049?aff=oddtdtcreator', swappable: true }
                 ],
                 'Thursday': [
-                    { time: '6:30 AM', title: 'Surya Dosha Yoga', location: 'Helios Studio', description: 'Energizing morning practice designed to awaken and invigorate the body.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'restorative'], bookingText: 'Book at Front Desk' }
+                    { time: '6:30 AM', title: 'Surya Dosha Yoga', location: 'Helios Studio', description: 'Energizing morning practice designed to awaken and invigorate the body.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/surya-dosha-yoga-energizing-tickets-1338767853689?aff=oddtdtcreator', swappable: true }
                 ],
                 'Friday': [
-                    { time: '8:00 AM', title: 'Gentle Yoga', location: 'Helios Studio', description: 'Restorative practice focusing on relaxation and gentle movement.', price: 'Complimentary', duration: 60, energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Front Desk' }
+                    { time: '8:00 AM', title: 'Gentle Yoga', location: 'Helios Studio', description: 'Restorative practice focusing on relaxation and gentle movement.', price: 'Complimentary', duration: 60, energyLevel: ['restorative', 'balanced'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/gentle-yoga-tickets-1304683175499?aff=oddtdtcreator', swappable: true }
                 ],
                 'Saturday': [
-                    { time: '8:45 AM', title: 'Vinyasa Yoga', location: 'Helios Studio', description: 'Energizing flow-based yoga linking postures with mindful breathing.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Book at Front Desk' },
-                    { time: '10:45 AM', title: 'Pilates', location: 'Helios Studio', description: 'Full-body conditioning emphasizing core strength, flexibility, and posture.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Book at Front Desk' }
+                    { time: '8:45 AM', title: 'Vinyasa Yoga', location: 'Helios Studio', description: 'Energizing flow-based yoga linking postures with mindful breathing.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/vinyasa-yoga-tickets-1304691791269?aff=oddtdtcreator', swappable: true },
+                    { time: '10:45 AM', title: 'Pilates', location: 'Helios Studio', description: 'Full-body conditioning emphasizing core strength, flexibility, and posture.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/pilates-tickets-1378940902359?aff=oddtdtcreator', swappable: true }
                 ],
                 'Sunday': [
-                    { time: '9:00 AM', title: 'Vinyasa Yoga', location: 'Helios Studio', description: 'Energizing flow-based yoga linking postures with mindful breathing.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Book at Front Desk' },
-                    { time: '10:30 AM', title: 'Mat Pilates', location: 'Helios Studio', description: 'Core-strengthening exercises emphasizing precision, control, and alignment.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Book at Front Desk' }
+                    { time: '9:00 AM', title: 'Vinyasa Yoga', location: 'Helios Studio', description: 'Energizing flow-based yoga linking postures with mindful breathing.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/vinyasa-yoga-tickets-1264416918039?aff=oddtdtcreator', swappable: true },
+                    { time: '10:30 AM', title: 'Mat Pilates', location: 'Helios Studio', description: 'Core-strengthening exercises emphasizing precision, control, and alignment.', price: 'Complimentary', duration: 60, energyLevel: ['balanced', 'high-activity'], bookingText: 'Reserve on Eventbrite', eventbriteUrl: 'https://www.eventbrite.com/e/mat-pilates-tickets-1264391090789?aff=oddtdtcreator', swappable: true }
                 ]
             },
 
-            // One-time only activities
-            oneTimeActivities: [
-                { time: '10:00 AM', title: 'VO2 Max Testing Session', location: 'Performance Lab - Fitness Center', description: 'Professional VO2 max test measuring maximal oxygen uptake for cardiovascular fitness assessment. Includes treadmill test with metabolic cart, digital report with training zones, and performance graphs. Plan 20 minutes total. Requires advance booking.', price: '$150', duration: 20, preparation: 'Fast 3 hours before, wear workout clothes, stay hydrated, book 24-48 hours in advance', energyLevel: ['high-activity', 'balanced'], bookingText: 'Book VO2 Testing', interests: ['movement'] },
-                { time: '9:00 AM', title: 'Ayurvedic Consultation with Martha', location: 'Surya Spa', description: 'Personalized dosha assessment and comprehensive wellness plan creation with internationally acclaimed Ayurvedic expert Martha Soffer. Book 1-2 weeks in advance.', price: 'Additional fee (15% off)', duration: 90, preparation: 'Arrive 15 minutes early, avoid heavy meals 2 hours before', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] }
+            // Time-categorized swap activities
+            morningActivities: [
+                { time: '7:00 AM', title: 'Morning Beach Walk', location: 'Santa Monica Beach', description: 'Energizing sunrise walk along the shore to start your day with ocean views.', price: 'Complimentary', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Meet at Lobby', interests: ['outdoor'] },
+                { time: '7:30 AM', title: 'Morning Coffee & Tea Service', location: 'Canela Lounge - Ground Floor', description: 'Counter Culture Coffee and artisanal tea service to start your day.', price: 'Complimentary', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: '', interests: ['dining'] },
+                { time: '8:00 AM', title: 'Personal Training Session', location: 'Helios Studio', description: 'One-on-one fitness coaching tailored to your goals and fitness level.', price: 'Additional fee', energyLevel: ['high-activity', 'balanced'], bookingText: 'Book Personal Training', interests: ['movement'] },
+                { time: '9:00 AM', title: 'Wellness Breakfast at Palma', location: 'Palma Restaurant', description: 'Greek Goddess Yogurt Parfait, Sprouted Overnight Oats, or Avocado Toast with fresh market fruit.', price: 'Menu pricing', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
+                { time: '10:00 AM', title: 'Surya Spa Ayurvedic Lattes', location: 'Palma Restaurant', description: 'Brainpower Latte, Whole Body Energy Latte, or Mighty Turmeric Latte crafted by Surya Spa.', price: 'Menu pricing', energyLevel: ['balanced', 'restorative'], bookingText: 'Walk-in Available', interests: ['dining'] },
+                { time: '10:30 AM', title: 'VO2 Max Testing Session', location: 'Performance Lab - Fitness Center', description: 'Professional VO2 max test measuring maximal oxygen uptake. Includes digital report.', price: '$150', energyLevel: ['high-activity', 'balanced'], bookingText: 'Book VO2 Testing', interests: ['movement'] }
             ],
-
-            // Recovery Suite (mutually exclusive options)
-            recoverySuite: [
-                { time: '8:00 AM', title: '60-Minute Recovery Suite', location: 'Recovery Suite', description: 'Fully immersive wellness experience with 25-minute Ammortal Chamber (breathwork/meditation using light, sound, vibration), dry sauna, cold plunge, Joovv red light therapy, Theraboots compression, and Theraguns. Arrive 5-10 minutes early. Available 7am-8pm daily.', price: '$245 (+$45 per additional guest)', duration: 60, preparation: 'Arrive 5-10 minutes early, bring workout clothes', energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve Recovery Suite', interests: ['recovery'] },
-                { time: '11:00 AM', title: '90-Minute Recovery Suite', location: 'Recovery Suite', description: 'Extended recovery session with 50-minute Ammortal Chamber experience, dry sauna detoxification, cold plunge therapy, full-body red light therapy wall, compression therapy, and targeted percussive massage. Available 7am-8pm daily.', price: '$345 (+$45 per additional guest)', duration: 90, preparation: 'Arrive 5-10 minutes early, bring workout clothes', energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve Recovery Suite', interests: ['recovery'] }
+            
+            midDayActivities: [
+                { time: '11:00 AM', title: 'Pool Time & Relaxation', location: 'Pool Deck', description: 'Unwind at the rooftop pool with stunning ocean views.', price: 'Complimentary', energyLevel: ['restorative', 'balanced'], bookingText: 'Walk-in Available', interests: ['outdoor'] },
+                { time: '11:00 AM', title: '60-Minute Recovery Suite', location: 'Recovery Suite', description: 'Fully immersive wellness experience with Ammortal Chamber, dry sauna, cold plunge, red light therapy.', price: '$245', energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve Recovery Suite', interests: ['recovery'] },
+                { time: '12:00 PM', title: 'Healthy Lunch at Palma', location: 'Palma Restaurant', description: 'Farmers Market Salad, Kale Pesto, or Pan Seared Salmon with Mediterranean sides.', price: 'Menu pricing', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
+                { time: '1:00 PM', title: 'Shirodhara Session', location: 'Surya Spa', description: 'Warm oil therapy streamed over your forehead for mental clarity and stress relief.', price: 'Additional fee (15% off)', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
+                { time: '2:00 PM', title: 'Surya\'s Signature Abhyanga Massage', location: 'Surya Spa', description: 'Luxurious four-handed massage with customized warm herbalized oils.', price: 'Additional fee (15% off)', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
+                { time: '2:00 PM', title: 'Tennis Instruction', location: 'Top-Tier LA Courts', description: 'Elite personalized instruction with professional coaches for all skill levels.', price: 'Additional fee', energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve with Guest Relations', interests: ['outdoor'] },
+                { time: '2:30 PM', title: 'Afternoon Wellness Bowl at Calabra', location: 'Calabra Restaurant', description: 'Falafel Bowl with green tahini, quinoa tabbouleh, and fresh vegetables.', price: 'Menu pricing', energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
+                { time: '3:00 PM', title: 'Beach Tennis with Ola', location: 'Santa Monica Beach', description: 'Hybrid sport combining tennis control with beach volleyball movement.', price: 'Additional fee', energyLevel: ['high-activity', 'balanced'], bookingText: 'Book Beach Tennis', interests: ['outdoor'] },
+                { time: '3:00 PM', title: 'Wellness Juices & Smoothies', location: 'Pool Bar', description: 'Fresh Sunshine juice or Pacific Blue smoothie with spirulina and coconut.', price: 'Menu pricing', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Walk-in Available', interests: ['dining'] },
+                { time: '3:00 PM', title: 'Proper Club Lounge - Afternoon Recharge', location: 'Proper Club Lounge', description: 'Afternoon wellness session with contrast therapy, saunas, and peaceful lounge relaxation.', price: '$195/day access', energyLevel: ['balanced', 'restorative'], bookingText: 'Purchase Day Pass', interests: ['recovery'] }
             ],
-
-            // Spa & Ayurvedic Treatments
-            spaActivities: [
-                { time: '10:00 AM', title: 'Shirodhara Session', location: 'Surya Spa', description: 'Warm oil therapy streamed over your forehead for mental clarity, stress relief, and nervous system balance.', price: 'Additional fee (15% off)', duration: 75, preparation: 'Shower before treatment', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
-                { time: '11:00 AM', title: 'Surya\'s Signature Abhyanga Massage', location: 'Surya Spa', description: 'Luxurious four-handed massage with customized warm herbalized oils for deep nourishment and youthful glow.', price: 'Additional fee (15% off)', duration: 90, preparation: 'Shower available after treatment', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
-                { time: '1:00 PM', title: 'Vishesh Deep Tissue Massage', location: 'Surya Spa', description: 'Vigorous Ayurvedic deep tissue massage with dual therapists working in tandem to melt tension and soothe muscles.', price: 'Additional fee (15% off)', duration: 75, preparation: 'Avoid intense workouts 2 hours before', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
-                { time: '2:00 PM', title: 'Udvartana Ayurvedic Scrub', location: 'Surya Spa', description: 'Invigorating full-body scrub with green organic coffee, herbs, and oils to promote circulation and energy.', price: 'Additional fee (15% off)', duration: 60, preparation: 'Shower included after treatment', energyLevel: ['balanced', 'restorative'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
-                { time: '3:00 PM', title: 'Surya Sound Bath', location: 'Surya Spa', description: 'Healing sound frequencies and meditation for deep relaxation and stress relief.', price: 'Additional fee (15% off)', duration: 45, preparation: 'Comfortable clothing recommended', energyLevel: ['restorative'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
-                { time: '4:00 PM', title: 'Surya Breathwork Session', location: 'Surya Spa', description: 'Guided breathing techniques for stress relief, energy balancing, and nervous system regulation.', price: 'Additional fee (15% off)', duration: 45, preparation: 'Comfortable clothing, avoid large meals 2 hours before', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] }
-            ],
-
-            // Outdoor & Beach Activities
-            outdoorActivities: [
-                { time: '7:00 AM', title: 'Morning Beach Walk', location: 'Santa Monica Beach', description: 'Energizing sunrise walk along the shore to start your day with ocean views.', price: 'Complimentary', duration: 45, energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Meet at Lobby', interests: ['outdoor'] },
-                { time: '9:00 AM', title: 'Tennis Instruction', location: 'Top-Tier LA Courts', description: 'Elite personalized instruction with professional coaches for all skill levels. Available by appointment.', price: 'Additional fee', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve with Guest Relations', interests: ['outdoor'] },
-                { time: '11:00 AM', title: 'Pool Time & Relaxation', location: 'Pool Deck', description: 'Unwind at the rooftop pool with stunning ocean views (available during pool hours).', price: 'Complimentary', duration: 120, energyLevel: ['restorative', 'balanced'], bookingText: 'Walk-in Available', interests: ['outdoor'] },
-                { time: '2:00 PM', title: 'Padel Session', location: 'Padel Courts', description: 'Fastest-growing racquet sport blending tennis and squash. Private sessions available by appointment.', price: 'Additional fee', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve with Guest Relations', interests: ['outdoor'] },
-                { time: '3:00 PM', title: 'Beach Tennis with Ola', location: 'Santa Monica Beach', description: 'Hybrid sport combining tennis control with beach volleyball movement for high-energy, full-body workout.', price: 'Additional fee', duration: 60, energyLevel: ['high-activity', 'balanced'], bookingText: 'Book Beach Tennis', interests: ['outdoor'] },
-                { time: '5:30 PM', title: 'Sunset Rooftop Yoga', location: 'Pool Deck', description: 'Evening yoga practice with panoramic ocean and city views.', price: 'Complimentary', duration: 60, energyLevel: ['restorative', 'balanced'], bookingText: 'Book with Concierge', interests: ['outdoor'] },
-                { time: '6:30 PM', title: 'Sunset Beach Walk', location: 'Santa Monica Beach', description: 'Guided mindful walk along the shore during golden hour.', price: 'Complimentary', duration: 45, energyLevel: ['restorative', 'balanced'], bookingText: 'Meet at Lobby', interests: ['outdoor'] }
-            ],
-
-            // Dining experiences with proper timing
-            diningActivities: [
-                { timeRange: '7:00 AM-11:00 AM', title: 'Morning Coffee & Tea Service', location: 'Canela Lounge - Ground Floor', description: 'Counter Culture Coffee and artisanal tea service to start your day.', price: 'Complimentary', duration: 30, mealType: 'coffee', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: '', interests: ['dining'] },
-                { timeRange: '7:00 AM-11:00 AM', title: 'Wellness Breakfast at Palma', location: 'Palma Restaurant', description: 'Greek Goddess Yogurt Parfait, Sprouted Overnight Oats, or Avocado Toast with fresh market fruit.', price: 'Available', duration: 45, mealType: 'breakfast', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
-                { timeRange: '10:00 AM-11:00 AM', title: 'Surya Spa Ayurvedic Lattes', location: 'Palma Restaurant', description: 'Brainpower Latte, Whole Body Energy Latte, or Mighty Turmeric Latte crafted by Surya Spa.', price: 'Available', duration: 20, mealType: 'beverage', energyLevel: ['balanced', 'restorative'], bookingText: 'Walk-in Available', interests: ['dining'] },
-                { timeRange: '12:00 PM-3:00 PM', title: 'Healthy Lunch at Palma', location: 'Palma Restaurant', description: 'Farmers Market Salad, Kale Pesto, or Pan Seared Salmon with Mediterranean-inspired sides.', price: 'Available', duration: 60, mealType: 'lunch', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
-                { timeRange: '12:30 PM-3:00 PM', title: 'Loreto Pop-Up Experience', location: 'Rooftop Terrace', description: 'Baja-style ceviche, aguachiles, and tostadas prepared without seed oils (Thu-Sun only, through Sept 1).', price: 'Available', duration: 45, mealType: 'lunch', seasonalRestriction: 'Thu-Sun only', energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve Table', interests: ['dining'] },
-                { timeRange: '2:30 PM-3:00 PM', title: 'Afternoon Wellness Bowl at Calabra', location: 'Calabra Restaurant', description: 'Falafel Bowl with green tahini, quinoa tabbouleh, and fresh vegetables.', price: 'Available', duration: 30, mealType: 'snack', energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
-                { timeRange: '3:00 PM-7:00 PM', title: 'Wellness Juices & Smoothies', location: 'Pool Bar', description: 'Fresh Sunshine juice (orange, turmeric, aloe vera) or Pacific Blue smoothie (spirulina, coconut, pineapple).', price: 'Available', duration: 15, mealType: 'beverage', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Walk-in Available', interests: ['dining'] },
-                { timeRange: '5:30 PM-11:00 PM', title: 'Wine & Mezze at Palma', location: 'Palma Lobby Lounge', description: 'Small plates and natural wines in the art-filled lobby lounge setting.', price: 'Available', duration: 90, mealType: 'cocktails', alcoholContent: true, energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
-                { timeRange: '7:00 PM-11:00 PM', title: 'Mediterranean Dinner at Calabra', location: 'Calabra Restaurant', description: 'Pan Seared Salmon, Crispy Eggplant Schnitzel, or Whole Roasted Branzino with panoramic ocean views.', price: 'Available', duration: 90, mealType: 'dinner', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] }
-            ],
-
-            // Proper Club Lounge (can't be scheduled with Recovery Suite on same day)
-            properClubActivities: [
-                { time: '7:00 AM', title: 'Proper Club Lounge - Morning Contrast Therapy', location: 'Proper Club Lounge', description: 'Begin your day with cold plunges at varying temperatures, private dry saunas (2-person and 6-person), infrared sauna access, and Surya tea service.', price: '$195/day access', duration: 120, energyLevel: ['balanced', 'restorative'], bookingText: 'Purchase Day Pass', interests: ['recovery'] },
-                { time: '3:00 PM', title: 'Proper Club Lounge - Afternoon Recharge', location: 'Proper Club Lounge', description: 'Afternoon wellness session with contrast therapy, saunas, and peaceful lounge relaxation.', price: '$195/day access', duration: 120, energyLevel: ['balanced', 'restorative'], bookingText: 'Purchase Day Pass', interests: ['recovery'] },
-                { time: '6:00 PM', title: 'Proper Club Lounge - Evening Wind-Down', location: 'Proper Club Lounge', description: 'End your day with relaxing contrast therapy, infrared sauna, and tranquil lounge atmosphere.', price: '$195/day access', duration: 120, energyLevel: ['balanced', 'restorative'], bookingText: 'Purchase Day Pass', interests: ['recovery'] }
-            ],
-
-            // Additional movement activities
-            movementActivities: [
-                { time: '11:00 AM', title: 'Personal Training Session', location: 'Helios Studio', description: 'One-on-one fitness coaching tailored to your goals and fitness level. 60-minute session with certified trainer.', price: 'Additional fee', duration: 60, preparation: 'Bring workout clothes and water', energyLevel: ['high-activity', 'balanced'], bookingText: 'Book Personal Training', interests: ['movement'] },
-                { time: '2:00 PM', title: 'Personal Training Session', location: 'Helios Studio', description: 'Afternoon one-on-one fitness coaching session tailored to your fitness goals.', price: 'Additional fee', duration: 60, preparation: 'Avoid heavy meals 2 hours before', energyLevel: ['high-activity', 'balanced'], bookingText: 'Book Personal Training', interests: ['movement'] },
-                { time: 'Anytime', title: '24/7 Gym Access', location: 'Helios Studio', description: 'State-of-the-art fitness facility available around the clock for hotel guests.', price: 'Complimentary', duration: 0, preparation: 'Access with room key', energyLevel: ['high-activity', 'balanced'], bookingText: 'Access with Room Key', interests: ['movement'] }
+            
+            eveningActivities: [
+                { time: '4:00 PM', title: 'Surya Breathwork Session', location: 'Surya Spa', description: 'Guided breathing techniques for stress relief, energy balancing, and nervous system regulation.', price: 'Additional fee (15% off)', energyLevel: ['restorative', 'balanced'], bookingText: 'Book at Surya Spa', interests: ['spa'] },
+                { time: '4:30 PM', title: 'Padel Session', location: 'Padel Courts', description: 'Fastest-growing racquet sport blending tennis and squash. Private sessions available.', price: 'Additional fee', energyLevel: ['high-activity', 'balanced'], bookingText: 'Reserve with Guest Relations', interests: ['outdoor'] },
+                { time: '5:30 PM', title: 'Sunset Rooftop Yoga', location: 'Pool Deck', description: 'Evening yoga practice with panoramic ocean and city views.', price: 'Complimentary', energyLevel: ['restorative', 'balanced'], bookingText: 'Book with Concierge', interests: ['outdoor'] },
+                { time: '5:30 PM', title: 'Wine & Mezze at Palma', location: 'Palma Lobby Lounge', description: 'Small plates and natural wines in the art-filled lobby lounge setting. Healthy mocktails also available.', price: 'Menu pricing', energyLevel: ['balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
+                { time: '6:00 PM', title: 'Proper Club Lounge - Evening Wind-Down', location: 'Proper Club Lounge', description: 'End your day with relaxing contrast therapy, infrared sauna, and tranquil atmosphere.', price: '$195/day access', energyLevel: ['balanced', 'restorative'], bookingText: 'Purchase Day Pass', interests: ['recovery'] },
+                { time: '6:30 PM', title: 'Sunset Beach Walk', location: 'Santa Monica Beach', description: 'Guided mindful walk along the shore during golden hour.', price: 'Complimentary', energyLevel: ['restorative', 'balanced'], bookingText: 'Meet at Lobby', interests: ['outdoor'] },
+                { time: '7:00 PM', title: 'Mediterranean Dinner at Calabra', location: 'Calabra Restaurant', description: 'Pan Seared Salmon, Crispy Eggplant Schnitzel, or Whole Roasted Branzino with ocean views.', price: 'Menu pricing', energyLevel: ['high-activity', 'balanced', 'restorative'], bookingText: 'Reserve on OpenTable', interests: ['dining'] },
+                { time: '8:00 PM', title: 'Evening Cocktails & Mocktails at Palma', location: 'Palma Lobby Lounge', description: 'Small-batch mezcals, crafted cocktails, and healthy mocktails with light bites in artistic lobby setting.', price: 'Menu pricing', energyLevel: ['balanced', 'restorative'], bookingText: 'Walk-in Available', interests: ['dining'] },
+                { time: '8:30 PM', title: 'Surya Sound Bath', location: 'Surya Spa', description: 'Healing sound frequencies and meditation for deep relaxation and stress relief.', price: 'Additional fee (15% off)', energyLevel: ['restorative'], bookingText: 'Book at Surya Spa', interests: ['spa'] }
             ]
         };
 
         // Track one-time activities used
         let usedOneTimeActivities = new Set();
-        let usedRecoverySuite = null; // Track which Recovery Suite option was used
-        let properClubDays = new Set(); // Track which days have Proper Club Lounge
+        let usedRecoverySuite = null;
+        let properClubDays = new Set();
+
+        // Initialize the survey when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDisplay();
+            setupAllEventListeners();
+        });
+
+        // Setup all event listeners
+        function setupAllEventListeners() {
+            setupStep1Listeners();
+            setupStep2Listeners();
+            setupStep3Listeners();
+            setupStep4Listeners();
+            setupStep5Listeners();
+        }
 
         // Navigation functions
         function goToNextStep() {
@@ -793,6 +792,7 @@
             
             // Previous button
             prevBtn.disabled = currentStep === 1;
+            prevBtn.style.visibility = currentStep === 1 ? 'hidden' : 'visible';
             
             // Next/Complete buttons
             if (currentStep === totalSteps) {
@@ -933,8 +933,12 @@
         // Enhanced itinerary generation with algorithm rules and loading
         function generateWellnessItinerary() {
             const resultsContainer = document.getElementById('step-6');
+            const completeBtn = document.getElementById('complete-btn');
             
-            // Show loading state
+            // FORCE HIDE the complete button during loading
+            completeBtn.style.display = 'none';
+            
+            // Show loading state WITHOUT any buttons
             resultsContainer.innerHTML = `
                 <div class="text-center py-12">
                     <div class="loading-spinner mx-auto mb-6"></div>
@@ -967,6 +971,8 @@
             // Wait 5 seconds then generate the actual itinerary
             setTimeout(() => {
                 generateActualItinerary(resultsContainer);
+                // ONLY NOW show the complete button after itinerary is fully generated
+                completeBtn.style.display = 'block';
             }, 5000);
         }
         
@@ -1048,11 +1054,22 @@
                 '<button onclick="emailItinerary()" class="btn-primary smp-body px-3 py-2 text-xs tracking-wide uppercase">Email to Me</button>' +
                 '</div>' +
                 '<p class="smp-body text-xs leading-relaxed mb-3">Your personalized wellness itinerary follows all operational guidelines and booking requirements. Activities are scheduled at actual class times and respect meal timing, energy levels, and preparation needs.</p>' +
-                '<div class="mb-3">' +
-                '<a href="https://santa-monica-fitness.properhotel.com/" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">View Full Fitness Schedule</a>' +
+                '<div class="mb-4">' +
+                '<h4 class="smp-header text-xs tracking-wide uppercase mb-2">Quick Booking Links</h4>' +
+                '<div class="grid grid-cols-1 gap-2 text-xs">' +
+                '<a href="https://santa-monica-fitness.properhotel.com/" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">View All Classes & Activities</a>' +
+                '<a href="https://www.opentable.com/r/palma-santa-monica" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Reserve Palma Restaurant</a>' +
+                '<a href="https://www.opentable.com/r/calabra-santa-monica" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Reserve Calabra Restaurant</a>' +
+                '<a href="https://www.opentable.com/booking/experiences-availability?rid=1042708&restref=1042708&experienceId=498441&utm_source=external&utm_medium=referral&utm_campaign=shared" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Reserve Loreto Pop-Up</a>' +
+                '<a href="https://na.spatime.com/susp401/4826280/home" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Book Surya Spa Treatments</a>' +
+                '<a href="https://dashboard.boulevard.io/booking/businesses/aac8e693-831d-4030-b8f8-eb9238e089bc/widget#/cart/menu/Session%20Time" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Book Recovery Suite</a>' +
+                '<a href="https://dashboard.boulevard.io/booking/businesses/aac8e693-831d-4030-b8f8-eb9238e089bc/widget#/cart/menu/Session%20Time" target="_blank" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Book VO2 Max Testing</a>' +
+                '<a href="mailto:smp.guestrelations@properhotel.com?subject=Tennis, Padel & Beach Activities" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Book Tennis, Padel & Beach Activities</a>' +
+                '<a href="mailto:wellness.smp@properhotel.com?subject=Proper Club Lounge Day Pass Request" class="btn-primary smp-body px-3 py-1 text-xs tracking-wide uppercase inline-block" style="text-decoration: none;">Request Proper Club Lounge Pass</a>' +
+                '</div>' +
                 '</div>' +
                 '<div class="mb-3">' +
-                '<p class="smp-body text-xs leading-relaxed" style="color: #666;">Loreto Pop-Up only available Thu-Sun through Sept 1, 2025. Recovery Suite available 7am-8pm daily. Proper Club Lounge requires day pass purchase.</p>' +
+                '<p class="smp-body text-xs leading-relaxed" style="color: #666;">Loreto Pop-Up only available Thu-Sun through Sept 1, 2025 | Recovery Suite available 7am-8pm daily | Proper Club Lounge day passes available via wellness.smp@properhotel.com</p>' +
                 '</div>' +
                 '<p class="smp-body text-xs">Questions? Contact our wellness team at <strong>wellness@properhotel.com</strong></p>' +
                 '</div>';
@@ -1102,17 +1119,18 @@
             
             // MORNING BLOCK (7:00 AM - 11:00 AM)
             if (!isArrivalDay || ['early-morning', 'morning'].includes(surveyData.arrivalTime)) {
-                // 7:30 AM - Always include coffee service
+                // 7:30 AM - Coffee service
                 dayActivities.push({
                     time: '7:30 AM',
                     title: 'Morning Coffee & Tea Service',
                     location: 'Canela Lounge - Ground Floor',
                     description: 'Counter Culture Coffee and artisanal tea service to start your day.',
                     price: 'Complimentary',
-                    bookingText: ''
+                    bookingText: '',
+                    timeCategory: 'morning'
                 });
                 
-                // 8:00 AM - Add fitness class if available for this day
+                // 8:00 AM - Fitness class if available
                 if (wellnessDatabase.fitnessClasses[dayOfWeek]) {
                     const morningClasses = wellnessDatabase.fitnessClasses[dayOfWeek].filter(cls => {
                         const hour = parseInt(cls.time.split(':')[0]);
@@ -1123,93 +1141,79 @@
                         const matchingClass = morningClasses.find(cls => 
                             cls.energyLevel.includes(energyLevel)
                         ) || morningClasses[0];
-                        dayActivities.push(matchingClass);
+                        dayActivities.push({
+                            ...matchingClass,
+                            timeCategory: 'morning'
+                        });
                     }
                 }
                 
-                // 9:00 AM - Add breakfast
+                // 9:00 AM - Breakfast
                 dayActivities.push({
                     time: '9:00 AM',
                     title: 'Wellness Breakfast at Palma',
                     location: 'Palma Restaurant',
                     description: 'Greek Goddess Yogurt Parfait, Sprouted Overnight Oats, or Avocado Toast with fresh market fruit.',
-                    price: 'Available',
-                    bookingText: 'Reserve on OpenTable'
+                    price: 'Menu pricing',
+                    bookingText: 'Reserve on OpenTable',
+                    timeCategory: 'morning'
                 });
                 
-                // 10:00 AM - Add Ayurvedic Lattes
+                // 10:00 AM - Ayurvedic Lattes
                 if (interests.includes('dining') || interests.includes('spa')) {
                     dayActivities.push({
                         time: '10:00 AM',
                         title: 'Surya Spa Ayurvedic Lattes',
                         location: 'Palma Restaurant',
                         description: 'Brainpower Latte, Whole Body Energy Latte, or Mighty Turmeric Latte crafted by Surya Spa.',
-                        price: 'Available',
-                        bookingText: 'Walk-in Available'
+                        price: 'Menu pricing',
+                        bookingText: 'Walk-in Available',
+                        timeCategory: 'morning'
                     });
                 }
             }
             
-            // MID-MORNING BLOCK (10:00 AM - 12:00 PM)
-            // 10:30 AM - Add one-time activities if appropriate
-            if (day === 2 && interests.includes('movement') && !usedOneTimeActivities.has('vo2')) {
-                dayActivities.push({
-                    time: '10:30 AM',
-                    title: 'VO2 Max Testing Session',
-                    location: 'Performance Lab - Fitness Center',
-                    description: 'Professional VO2 max test measuring maximal oxygen uptake. Includes digital report with training zones.',
-                    price: '$150',
-                    bookingText: 'Book VO2 Testing'
-                });
-                usedOneTimeActivities.add('vo2');
-            } else if (interests.includes('recovery') && !usedRecoverySuite && !properClubDays.has(day)) {
-                // 11:00 AM - Add recovery suite if interested and not used
-                const recoverySuiteOption = energyLevel === 'high-activity' ? 
-                    wellnessDatabase.recoverySuite[1] : wellnessDatabase.recoverySuite[0];
-                dayActivities.push({
-                    time: '11:00 AM',
-                    title: recoverySuiteOption.title,
-                    location: recoverySuiteOption.location,
-                    description: recoverySuiteOption.description,
-                    price: recoverySuiteOption.price,
-                    bookingText: recoverySuiteOption.bookingText
-                });
-                usedRecoverySuite = recoverySuiteOption.title;
-            } else if (interests.includes('movement')) {
-                // 11:00 AM - Personal training or gym time
-                dayActivities.push({
-                    time: '11:00 AM',
-                    title: 'Personal Training Session',
-                    location: 'Helios Studio',
-                    description: 'One-on-one fitness coaching tailored to your goals and fitness level.',
-                    price: 'Additional fee',
-                    bookingText: 'Book Personal Training'
-                });
-            } else {
-                // 11:00 AM - Pool time as default
-                dayActivities.push({
-                    time: '11:00 AM',
-                    title: 'Pool Time & Relaxation',
-                    location: 'Pool Deck',
-                    description: 'Unwind at the rooftop pool with stunning ocean views.',
-                    price: 'Complimentary',
-                    bookingText: 'Walk-in Available'
-                });
-            }
-            
-            // LUNCH BLOCK (12:00 PM - 1:30 PM)
+            // MID-DAY BLOCK (11:00 AM - 4:00 PM)
             if (!isDepartureDay || ['afternoon', 'evening', 'flexible'].includes(surveyData.departureTime)) {
-                // Check for Loreto Pop-Up availability (Thu-Sun only)
-                const isLoretoDayAvailable = ['Thursday', 'Friday', 'Saturday', 'Sunday'].includes(dayOfWeek);
+                // 11:00 AM - Activity based on interests
+                if (interests.includes('recovery') && !usedRecoverySuite && !properClubDays.has(day)) {
+                    dayActivities.push({
+                        time: '11:00 AM',
+                        title: '60-Minute Recovery Suite',
+                        location: 'Recovery Suite',
+                        description: 'Fully immersive wellness experience with Ammortal Chamber, dry sauna, cold plunge, red light therapy.',
+                        price: '$245',
+                        bookingText: 'Reserve Recovery Suite',
+                        timeCategory: 'midday'
+                    });
+                    usedRecoverySuite = '60-Minute Recovery Suite';
+                } else {
+                    dayActivities.push({
+                        time: '11:00 AM',
+                        title: 'Pool Time & Relaxation',
+                        location: 'Pool Deck',
+                        description: 'Unwind at the rooftop pool with stunning ocean views.',
+                        price: 'Complimentary',
+                        bookingText: 'Walk-in Available',
+                        timeCategory: 'midday'
+                    });
+                }
                 
-                if (isLoretoDayAvailable && interests.includes('dining')) {
+                // 12:30 PM - Lunch
+                const isThursdayToSunday = ['Thursday', 'Friday', 'Saturday', 'Sunday'].includes(dayOfWeek);
+                const currentTime = new Date().getTime();
+                const sept1_2025 = new Date('2025-09-01').getTime();
+                const isBeforeSept1 = currentTime <= sept1_2025;
+                
+                if (interests.includes('dining') && isThursdayToSunday && isBeforeSept1) {
                     dayActivities.push({
                         time: '12:30 PM',
                         title: 'Loreto Pop-Up Experience',
                         location: 'Rooftop Terrace',
-                        description: 'Baja-style ceviche, aguachiles, and tostadas prepared without seed oils (Thu-Sun only).',
-                        price: 'Available',
-                        bookingText: 'Reserve Table'
+                        description: 'Baja-style ceviche, aguachiles, and tostadas (Thu-Sun 12PM-8PM, until Sept 1, 2025).',
+                        price: 'Menu pricing',
+                        bookingText: 'Reserve Table',
+                        timeCategory: 'midday'
                     });
                 } else {
                     dayActivities.push({
@@ -1217,83 +1221,49 @@
                         title: 'Healthy Lunch at Palma',
                         location: 'Palma Restaurant',
                         description: 'Farmers Market Salad, Kale Pesto, or Pan Seared Salmon with Mediterranean sides.',
-                        price: 'Available',
-                        bookingText: 'Reserve on OpenTable'
-                    });
-                }
-            }
-            
-            // AFTERNOON BLOCK (2:00 PM - 5:00 PM)
-            if (!isDepartureDay || ['evening', 'flexible'].includes(surveyData.departureTime)) {
-                // 2:00 PM - Add spa treatment if interested
-                if (interests.includes('spa')) {
-                    const spaOptions = wellnessDatabase.spaActivities.filter(spa => 
-                        spa.energyLevel.includes(energyLevel)
-                    );
-                    if (spaOptions.length > 0) {
-                        const selectedSpa = spaOptions[Math.floor(Math.random() * spaOptions.length)];
-                        dayActivities.push({
-                            time: '2:00 PM',
-                            title: selectedSpa.title,
-                            location: selectedSpa.location,
-                            description: selectedSpa.description,
-                            price: selectedSpa.price,
-                            bookingText: selectedSpa.bookingText
-                        });
-                    }
-                } else if (interests.includes('outdoor')) {
-                    // Alternative outdoor activity
-                    dayActivities.push({
-                        time: '2:00 PM',
-                        title: 'Afternoon Pool Time',
-                        location: 'Pool Deck',
-                        description: 'Unwind at the rooftop pool with stunning views.',
-                        price: 'Complimentary',
-                        bookingText: 'Walk-in Available'
+                        price: 'Menu pricing',
+                        bookingText: 'Reserve on OpenTable',
+                        timeCategory: 'midday'
                     });
                 }
                 
-                // 3:30 PM - Afternoon snack/juice
+                // 2:00 PM - Interest-based activity
+                if (interests.includes('spa')) {
+                    dayActivities.push({
+                        time: '2:00 PM',
+                        title: 'Shirodhara Session',
+                        location: 'Surya Spa',
+                        description: 'Warm oil therapy streamed over your forehead for mental clarity and stress relief.',
+                        price: 'Additional fee (15% off)',
+                        bookingText: 'Book at Surya Spa',
+                        timeCategory: 'midday'
+                    });
+                } else if (interests.includes('outdoor')) {
+                    dayActivities.push({
+                        time: '2:00 PM',
+                        title: 'Tennis Instruction',
+                        location: 'Top-Tier LA Courts',
+                        description: 'Elite personalized instruction with professional coaches for all skill levels.',
+                        price: 'Additional fee',
+                        bookingText: 'Reserve with Guest Relations',
+                        timeCategory: 'midday'
+                    });
+                }
+                
+                // 3:30 PM - Always include wellness juices
                 dayActivities.push({
                     time: '3:30 PM',
                     title: 'Wellness Juices & Smoothies',
                     location: 'Pool Bar',
-                    description: 'Fresh Sunshine juice (orange, turmeric, aloe vera) or Pacific Blue smoothie (spirulina, coconut, pineapple).',
-                    price: 'Available',
-                    bookingText: 'Walk-in Available'
+                    description: 'Fresh Sunshine juice or Pacific Blue smoothie with spirulina and coconut.',
+                    price: 'Menu pricing',
+                    bookingText: 'Walk-in Available',
+                    timeCategory: 'midday'
                 });
-                
-                // 4:30 PM - Add outdoor activity if interested
-                if (interests.includes('outdoor')) {
-                    const outdoorOptions = wellnessDatabase.outdoorActivities.filter(outdoor => 
-                        outdoor.energyLevel.includes(energyLevel)
-                    );
-                    if (outdoorOptions.length > 0) {
-                        const selectedOutdoor = outdoorOptions[Math.floor(Math.random() * outdoorOptions.length)];
-                        dayActivities.push({
-                            time: '4:30 PM',
-                            title: selectedOutdoor.title,
-                            location: selectedOutdoor.location,
-                            description: selectedOutdoor.description,
-                            price: selectedOutdoor.price,
-                            bookingText: selectedOutdoor.bookingText
-                        });
-                    }
-                } else if (interests.includes('spa')) {
-                    // Evening wellness bowl
-                    dayActivities.push({
-                        time: '4:30 PM',
-                        title: 'Afternoon Wellness Bowl at Calabra',
-                        location: 'Calabra Restaurant',
-                        description: 'Falafel Bowl with green tahini, quinoa tabbouleh, and fresh vegetables.',
-                        price: 'Available',
-                        bookingText: 'Reserve on OpenTable'
-                    });
-                }
             }
             
             // EVENING BLOCK (5:30 PM - 9:00 PM)
-            if (!isDepartureDay) {
+            if (!isDepartureDay || ['evening', 'flexible'].includes(surveyData.departureTime)) {
                 // 5:30 PM - Sunset activity
                 if (interests.includes('outdoor')) {
                     dayActivities.push({
@@ -1302,22 +1272,23 @@
                         location: 'Pool Deck',
                         description: 'Evening yoga practice with panoramic ocean and city views.',
                         price: 'Complimentary',
-                        bookingText: 'Book with Concierge'
+                        bookingText: 'Book with Concierge',
+                        timeCategory: 'evening'
                     });
-                } else if (interests.includes('recovery') && !usedRecoverySuite && !properClubDays.has(day)) {
-                    // Proper Club Lounge if interested and no Recovery Suite on this day
+                } else if (interests.includes('recovery') && !properClubDays.has(day) && usedRecoverySuite !== '60-Minute Recovery Suite') {
                     dayActivities.push({
                         time: '5:30 PM',
                         title: 'Proper Club Lounge - Evening Wind-Down',
                         location: 'Proper Club Lounge',
                         description: 'End your day with relaxing contrast therapy, infrared sauna, and tranquil atmosphere.',
                         price: '$195/day access',
-                        bookingText: 'Purchase Day Pass'
+                        bookingText: 'Purchase Day Pass',
+                        timeCategory: 'evening'
                     });
                     properClubDays.add(day);
                 }
                 
-                // 6:30 PM - Add evening beach walk for outdoor enthusiasts
+                // 6:30 PM - Beach walk
                 if (interests.includes('outdoor')) {
                     dayActivities.push({
                         time: '6:30 PM',
@@ -1325,29 +1296,60 @@
                         location: 'Santa Monica Beach',
                         description: 'Guided mindful walk along the shore during golden hour.',
                         price: 'Complimentary',
-                        bookingText: 'Meet at Lobby'
+                        bookingText: 'Meet at Lobby',
+                        timeCategory: 'evening'
                     });
                 }
                 
-                // 7:30 PM - Dinner
+                // 7:30 PM - Always include dinner
                 dayActivities.push({
                     time: '7:30 PM',
                     title: 'Mediterranean Dinner at Calabra',
                     location: 'Calabra Restaurant',
                     description: 'Pan Seared Salmon, Crispy Eggplant Schnitzel, or Whole Roasted Branzino with ocean views.',
-                    price: 'Available',
-                    bookingText: 'Reserve on OpenTable'
+                    price: 'Menu pricing',
+                    bookingText: 'Reserve on OpenTable',
+                    timeCategory: 'evening'
                 });
                 
-                // 8:45 PM - Evening cocktails (only after 5 PM, no alcohol before physical activities)
+                // 8:45 PM - Always include evening cocktails
                 dayActivities.push({
                     time: '8:45 PM',
-                    title: 'Evening Cocktails at Palma',
+                    title: 'Evening Cocktails & Mocktails at Palma',
                     location: 'Palma Lobby Lounge',
-                    description: 'Small-batch mezcals, crafted cocktails, and light bites in artistic lobby setting.',
-                    price: 'Available',
-                    bookingText: 'Walk-in Available'
+                    description: 'Small-batch mezcals, crafted cocktails, and healthy mocktails with light bites in artistic lobby setting.',
+                    price: 'Menu pricing',
+                    bookingText: 'Walk-in Available',
+                    timeCategory: 'evening'
                 });
+            }
+            
+            // Special Day 2 activities
+            if (day === 2 && interests.includes('movement') && !usedOneTimeActivities.has('VO2 Max Testing')) {
+                // Replace 10:30 AM activity with VO2 Max testing
+                const vo2Activity = {
+                    time: '10:30 AM',
+                    title: 'VO2 Max Testing Session',
+                    location: 'Performance Lab - Fitness Center',
+                    description: 'Professional VO2 max test measuring maximal oxygen uptake. Includes digital report.',
+                    price: '$150',
+                    bookingText: 'Book VO2 Testing',
+                    timeCategory: 'morning'
+                };
+                
+                // Insert VO2 activity in correct chronological position
+                let inserted = false;
+                for (let i = 0; i < dayActivities.length; i++) {
+                    if (dayActivities[i].time === '10:30 AM' || (parseInt(dayActivities[i].time.split(':')[0]) > 10)) {
+                        dayActivities.splice(i, 0, vo2Activity);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if (!inserted) {
+                    dayActivities.push(vo2Activity);
+                }
+                usedOneTimeActivities.add('VO2 Max Testing');
             }
             
             // Sort activities by time
@@ -1357,112 +1359,405 @@
                 return timeA - timeB;
             });
             
-            return dayActivities.map(activity => createActivityHTML(activity)).join('');
+            // Generate HTML for day activities
+            let dayHTML = '';
+            dayActivities.forEach((activity, index) => {
+                const swappable = activity.swappable !== false;
+                dayHTML += 
+                    '<div class="activity-item' + (swappable ? ' swappable' : '') + '" data-activity-index="' + index + '" data-time-category="' + (activity.timeCategory || 'general') + '">' +
+                    '<div class="activity-time">' + activity.time + '</div>' +
+                    '<div class="activity-content">' +
+                    '<div class="activity-title">' + activity.title + '</div>' +
+                    '<div class="activity-location">' + activity.location + '</div>' +
+                    '<div class="activity-description">' + activity.description + '</div>' +
+                    '<div class="text-xs mt-2" style="color: #888888;">' +
+                    (activity.price === 'Complimentary' ? 'Complimentary' : 
+                     activity.price === 'Available' ? '' : 
+                     activity.price === 'Menu pricing' ? 'Menu pricing' : 
+                     activity.price) +
+                    (activity.bookingText ? (activity.price === 'Available' ? '' : ' | ') + '<strong>Booking:</strong> ' + activity.bookingText : '') +
+                    '</div>' +
+                    '</div>';
+                
+                if (swappable) {
+                    dayHTML += '<button class="swap-btn" onclick="toggleSwapOptions(this)">Swap</button>' +
+                              '<div class="swap-options"></div>';
+                }
+                
+                dayHTML += '</div>';
+            });
+            
+            return dayHTML;
         }
-
+        
         function convertTimeToMinutes(timeStr) {
             const [time, period] = timeStr.split(' ');
-            const [hours, minutes] = time.split(':').map(Number);
-            let totalMinutes = minutes;
+            let [hours, minutes] = time.split(':').map(Number);
             
             if (period === 'PM' && hours !== 12) {
-                totalMinutes += (hours + 12) * 60;
+                hours += 12;
             } else if (period === 'AM' && hours === 12) {
-                totalMinutes += 0;
-            } else {
-                totalMinutes += hours * 60;
+                hours = 0;
             }
             
-            return totalMinutes;
+            return hours * 60 + minutes;
         }
-
-        function createActivityHTML(activity) {
-            return `
-                <div class="activity-item swappable">
-                    <div class="activity-time">${activity.time}</div>
-                    <div class="activity-content">
-                        <div class="activity-title">${activity.title}</div>
-                        <div class="activity-location">${activity.location}</div>
-                        <div class="activity-description">${activity.description}</div>
-                        <div class="text-xs mt-2" style="color: #000; font-weight: 500;">${activity.price} • ${activity.bookingText}</div>
-                    </div>
-                    <button class="swap-btn">Swap</button>
-                    <div class="swap-options">
-                        <div class="swap-option" onclick="swapActivity(this, 'Morning Coffee & Tea Service', 'Canela Lounge', 'Complimentary Counter Culture Coffee and artisanal tea service', 'Complimentary', 'Walk-in Available')">Morning Coffee & Tea Service</div>
-                        <div class="swap-option" onclick="swapActivity(this, 'Pool Time & Relaxation', 'Pool Deck', 'Unwind at the rooftop pool with stunning ocean views', 'Complimentary', 'Walk-in Available')">Pool Time & Relaxation</div>
-                        <div class="swap-option" onclick="swapActivity(this, 'Wellness Juices & Smoothies', 'Pool Bar', 'Fresh Sunshine juice or Pacific Blue smoothie', '$18-20', 'Walk-in Available')">Wellness Juices & Smoothies</div>
-                        <div class="swap-option" onclick="swapActivity(this, 'Beach Sunset Walk', 'Santa Monica Beach', 'Guided mindful walk along the shore during golden hour', 'Complimentary', 'Meet at Lobby')">Beach Sunset Walk</div>
-                    </div>
-                </div>
-            `;
-        }
-
+        
         function setupSwapFunctionality() {
-            document.querySelectorAll('.swap-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const swapOptions = this.nextElementSibling;
+            // Implementation for swap functionality would go here
+            // This is a placeholder for the swap system
+        }
+        
+        function toggleSwapOptions(button) {
+            const swapOptions = button.nextElementSibling;
+            const activityItem = button.closest('.activity-item');
+            const timeCategory = activityItem.getAttribute('data-time-category');
+            
+            if (swapOptions.classList.contains('active')) {
+                swapOptions.classList.remove('active');
+                return;
+            }
+            
+            // Close other open swap options
+            document.querySelectorAll('.swap-options.active').forEach(options => {
+                options.classList.remove('active');
+            });
+            
+            // Generate swap options based on time category
+            const availableSwaps = getSwapOptions(timeCategory);
+            let swapHTML = '';
+            
+            availableSwaps.forEach(option => {
+                swapHTML += 
+                    '<div class="swap-option" onclick="swapActivity(this)">' +
+                    '<div style="font-weight: 600;">' + option.title + '</div>' +
+                    '<div style="color: #666; font-size: 10px;">' + option.location + ' | ' + option.price + '</div>' +
+                    '</div>';
+            });
+            
+            swapOptions.innerHTML = swapHTML;
+            swapOptions.classList.add('active');
+        }
+        
+        function getSwapOptions(timeCategory) {
+            const energyLevel = surveyData.energyLevel;
+            const interests = surveyData.interests;
+            
+            let availableOptions = [];
+            
+            switch (timeCategory) {
+                case 'morning':
+                    availableOptions = wellnessDatabase.morningActivities;
+                    break;
+                case 'midday':
+                    availableOptions = wellnessDatabase.midDayActivities;
+                    break;
+                case 'evening':
+                    availableOptions = wellnessDatabase.eveningActivities;
+                    break;
+                default:
+                    availableOptions = [...wellnessDatabase.morningActivities, ...wellnessDatabase.midDayActivities, ...wellnessDatabase.eveningActivities];
+            }
+            
+            // Filter by energy level and interests
+            const filtered = availableOptions.filter(option => {
+                const energyMatch = !option.energyLevel || option.energyLevel.includes(energyLevel);
+                const interestMatch = !option.interests || option.interests.some(interest => interests.includes(interest));
+                
+                // Special Loreto Pop-Up filtering
+                if (option.title === 'Loreto Pop-Up Experience') {
+                    const currentTime = new Date().getTime();
+                    const sept1_2025 = new Date('2025-09-01').getTime();
+                    const isBeforeSept1 = currentTime <= sept1_2025;
                     
-                    // Close all other open swap options
-                    document.querySelectorAll('.swap-options.active').forEach(option => {
-                        if (option !== swapOptions) {
-                            option.classList.remove('active');
+                    // Only show Loreto for midday category, Thu-Sun, and before Sept 1, 2025
+                    if (timeCategory !== 'midday' || !isBeforeSept1) {
+                        return false;
+                    }
+                    
+                    // Check if it's Thursday-Sunday (this would need day context which we don't have in swap)
+                    // For now, we'll allow it and let the booking handle the restriction
+                }
+                
+                return energyMatch && interestMatch;
+            });
+            
+            // Limit to 8 options and prioritize complimentary activities
+            return filtered.sort((a, b) => {
+                if (a.price === 'Complimentary' && b.price !== 'Complimentary') return -1;
+                if (b.price === 'Complimentary' && a.price !== 'Complimentary') return 1;
+                return 0;
+            }).slice(0, 8);
+        }
+        
+        function swapActivity(optionElement) {
+            // Implementation for actual activity swapping would go here
+            // This is a placeholder
+            optionElement.closest('.swap-options').classList.remove('active');
+        }
+        
+        function downloadPDF() {
+            // Create a new window with the itinerary content for printing/PDF
+            const printWindow = window.open('', '_blank');
+            const itineraryContent = document.getElementById('step-6').innerHTML;
+            
+            // Format dates for the title
+            const arrivalDate = new Date(surveyData.arrivalDate);
+            const formatDate = (date) => {
+                return date.toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            };
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Wellness Itinerary - ${surveyData.names} - ${formatDate(arrivalDate)}</title>
+                    <style>
+                        body {
+                            font-family: Georgia, serif;
+                            line-height: 1.6;
+                            margin: 40px;
+                            color: #000;
+                            background: white;
                         }
-                    });
+                        .header {
+                            text-align: center;
+                            margin-bottom: 40px;
+                            border-bottom: 2px solid #000;
+                            padding-bottom: 20px;
+                        }
+                        .header h1 {
+                            font-size: 24px;
+                            margin: 0;
+                            text-transform: uppercase;
+                            letter-spacing: 2px;
+                        }
+                        .header h2 {
+                            font-size: 18px;
+                            margin: 10px 0 0 0;
+                            font-weight: normal;
+                        }
+                        .profile-summary, .contact-section {
+                            background: #f9f9f9;
+                            padding: 20px;
+                            margin: 20px 0;
+                            border: 1px solid #ddd;
+                        }
+                        .day-container {
+                            margin: 30px 0;
+                            break-inside: avoid;
+                        }
+                        .day-header {
+                            background: #000;
+                            color: white;
+                            padding: 15px;
+                            text-align: center;
+                            font-size: 16px;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                        }
+                        .activity-item {
+                            padding: 15px;
+                            border-bottom: 1px solid #eee;
+                            display: flex;
+                            gap: 20px;
+                        }
+                        .activity-time {
+                            font-weight: bold;
+                            width: 100px;
+                            flex-shrink: 0;
+                        }
+                        .activity-title {
+                            font-weight: bold;
+                            text-transform: uppercase;
+                            font-size: 12px;
+                            letter-spacing: 1px;
+                            margin-bottom: 5px;
+                        }
+                        .activity-location {
+                            color: #666;
+                            font-size: 11px;
+                            margin-bottom: 8px;
+                        }
+                        .activity-description {
+                            font-size: 12px;
+                            line-height: 1.4;
+                            margin-bottom: 8px;
+                        }
+                        .swap-btn, .swap-options {
+                            display: none !important;
+                        }
+                        @media print {
+                            body { margin: 20px; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Santa Monica Proper</h1>
+                        <h2>Wellness Experience Itinerary</h2>
+                        <p><strong>${surveyData.names}</strong> | ${formatDate(arrivalDate)}</p>
+                    </div>
+                    ${itineraryContent}
+                    <div class="no-print" style="text-align: center; margin-top: 40px;">
+                        <button onclick="window.print()" style="background: #000; color: white; padding: 15px 30px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Print / Save as PDF</button>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            
+            // Auto-print after a short delay to allow content to load
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+        
+        function emailItinerary() {
+            // Get guest email or prompt for it
+            let guestEmail = prompt('Please enter your email address to receive your wellness itinerary:');
+            
+            if (!guestEmail) {
+                return; // User cancelled
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(guestEmail)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Format the itinerary for email
+            const arrivalDate = new Date(surveyData.arrivalDate);
+            const formatDate = (date) => {
+                return date.toLocaleDateString('en-US', { 
+                    weekday: 'long',
+                    month: 'long', 
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            };
+            
+            // Extract the complete itinerary from the displayed content
+            let fullItinerary = '';
+            const dayContainers = document.querySelectorAll('.day-container');
+            
+            dayContainers.forEach(dayContainer => {
+                const dayHeader = dayContainer.querySelector('.day-header h3');
+                if (dayHeader) {
+                    fullItinerary += '\n' + '='.repeat(50) + '\n';
+                    fullItinerary += dayHeader.textContent.toUpperCase() + '\n';
+                    fullItinerary += '='.repeat(50) + '\n\n';
+                }
+                
+                const activities = dayContainer.querySelectorAll('.activity-item');
+                activities.forEach(activity => {
+                    const time = activity.querySelector('.activity-time');
+                    const title = activity.querySelector('.activity-title');
+                    const location = activity.querySelector('.activity-location');
+                    const description = activity.querySelector('.activity-description');
+                    const priceInfo = activity.querySelector('.text-xs');
                     
-                    swapOptions.classList.toggle('active');
+                    if (time && title) {
+                        fullItinerary += `${time.textContent} - ${title.textContent}\n`;
+                        if (location) fullItinerary += `Location: ${location.textContent}\n`;
+                        if (description) fullItinerary += `${description.textContent}\n`;
+                        if (priceInfo) {
+                            // Clean up the price info text
+                            const cleanPriceInfo = priceInfo.textContent
+                                .replace(/Price:\s*/g, 'Price: ')
+                                .replace(/Booking:\s*/g, 'Booking: ')
+                                .replace(/\s+/g, ' ')
+                                .trim();
+                            fullItinerary += `${cleanPriceInfo}\n`;
+                        }
+                        fullItinerary += '\n';
+                    }
                 });
             });
-        }
+            
+            // Get wellness profile info
+            const profileElements = document.querySelectorAll('.profile-summary');
+            let profileInfo = '';
+            
+            profileElements.forEach(profile => {
+                const profileDivs = profile.querySelectorAll('div div');
+                profileDivs.forEach(div => {
+                    if (div.textContent.includes(':')) {
+                        profileInfo += div.textContent + '\n';
+                    }
+                });
+                profileInfo += '\n';
+            });
+            
+            // Create email subject and body with FULL itinerary
+            const subject = `Your Santa Monica Proper Wellness Itinerary - ${surveyData.names}`;
+            const body = `Dear ${surveyData.names},
 
-        function swapActivity(element, title, location, description, price, bookingText) {
-            const activityItem = element.closest('.activity-item');
-            const titleEl = activityItem.querySelector('.activity-title');
-            const locationEl = activityItem.querySelector('.activity-location');
-            const descriptionEl = activityItem.querySelector('.activity-description');
-            const priceEl = activityItem.querySelector('.text-xs');
-            
-            titleEl.textContent = title;
-            locationEl.textContent = location;
-            descriptionEl.textContent = description;
-            
-            const bookingInfo = bookingText ? ` • ${bookingText}` : '';
-            const priceDisplay = price + bookingInfo;
-            // Remove trailing " •" if no booking text
-            const cleanPriceDisplay = priceDisplay.endsWith(' •') ? price : priceDisplay;
-            priceEl.textContent = cleanPriceDisplay;
-            
-            // Hide swap options
-            element.closest('.swap-options').classList.remove('active');
-        }
+Thank you for completing your Wellness Experience Survey! Below is your complete personalized wellness itinerary for your stay at Santa Monica Proper.
 
-        function downloadPDF() {
-            window.print();
-        }
+${profileInfo}
 
-        function emailItinerary() {
-            const subject = encodeURIComponent('My Personalized Wellness Itinerary - Santa Monica Proper');
-            const body = encodeURIComponent('Please find my personalized wellness itinerary attached. I look forward to my stay at Santa Monica Proper!');
-            window.location.href = `mailto:?subject=${subject}&body=${body}`;
-        }
+YOUR COMPLETE WELLNESS ITINERARY:
+${fullItinerary}
 
-        // Initialize the survey when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set up navigation button event listeners
-            document.getElementById('next-btn').addEventListener('click', goToNextStep);
-            document.getElementById('prev-btn').addEventListener('click', goToPreviousStep);
-            document.getElementById('complete-btn').addEventListener('click', downloadPDF);
+BOOKING INFORMATION & IMPORTANT NOTES:
+• Fitness Classes: Book at Front Desk - All classes are complimentary
+• Spa Treatments: Book at Surya Spa (15% guest discount automatically applied)
+• Recovery Suite: Reserve in advance - $245 (60-min) or $345 (90-min)
+• Restaurants: Reserve on OpenTable for best availability
+• Proper Club Lounge: $195/day pass (includes all amenities)
+• VO2 Max Testing: $150 per session (includes digital report)
+
+OPERATIONAL HOURS & RESTRICTIONS:
+• Loreto Pop-Up: Available Thursday-Sunday only through September 1, 2025
+• Recovery Suite: Available daily 7:00 AM - 8:00 PM
+• Fitness Center: 24/7 access for hotel guests
+• Pool Deck: Seasonal hours, check with concierge
+
+CONTACT INFORMATION:
+• Wellness Team: wellness@properhotel.com
+• Front Desk: For fitness class bookings
+• Concierge: For activity reservations and local recommendations
+• Surya Spa: For all spa treatment bookings
+
+We look forward to welcoming you for an exceptional wellness experience at Santa Monica Proper!
+
+Best regards,
+The Santa Monica Proper Wellness Team
+
+---
+Santa Monica Proper Hotel
+700 Wilshire Blvd, Santa Monica, CA 90401`;
+
+            // Open email client with pre-filled content
+            const mailtoLink = `mailto:${guestEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             
-            // Set up step-specific listeners
-            setupStep1Listeners();
-            setupStep2Listeners();
-            setupStep3Listeners();
-            setupStep4Listeners();
-            setupStep5Listeners();
-            
-            // Initial display update
-            updateDisplay();
-        });
+            // Try to open the email client
+            try {
+                window.location.href = mailtoLink;
+                
+                // Show confirmation message
+                setTimeout(() => {
+                    alert(`Complete wellness itinerary prepared for ${guestEmail}! Please check your email client to send. The email includes your full day-by-day schedule with all activities, times, locations, and booking information.`);
+                }, 1000);
+                
+            } catch (error) {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(body).then(() => {
+                    alert(`Complete itinerary copied to clipboard! Please paste into your email client and send to ${guestEmail}.`);
+                }).catch(() => {
+                    alert(`Please copy your complete itinerary and email to ${guestEmail}. Contact wellness@properhotel.com if you need assistance.`);
+                });
+            }
+        }
     </script>
 </body>
 </html>
