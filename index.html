@@ -1363,6 +1363,38 @@
             let dayHTML = '';
             dayActivities.forEach((activity, index) => {
                 const swappable = activity.swappable !== false;
+                
+                // Create booking link HTML
+                let bookingHTML = '';
+                if (activity.bookingText) {
+                    if (activity.eventbriteUrl) {
+                        bookingHTML = `<strong>Booking:</strong> <a href="${activity.eventbriteUrl}" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Reserve on OpenTable' && activity.location.includes('Palma')) {
+                        bookingHTML = `<strong>Booking:</strong> <a href="https://www.opentable.com/r/palma-santa-monica" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Reserve on OpenTable' && activity.location.includes('Calabra')) {
+                        bookingHTML = `<strong>Booking:</strong> <a href="https://www.opentable.com/r/calabra-santa-monica" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Reserve Table' && activity.title.includes('Loreto')) {
+                        bookingHTML = `<strong>Booking:</strong> <a href="https://www.opentable.com/booking/experiences-availability?rid=1042708&restref=1042708&experienceId=498441&utm_source=external&utm_medium=referral&utm_campaign=shared" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Book at Surya Spa') {
+                        bookingHTML = `<strong>Booking:</strong> <a href="https://na.spatime.com/susp401/4826280/home" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Reserve Recovery Suite') {
+                        bookingHTML = `<strong>Booking:</strong> <a href="https://dashboard.boulevard.io/booking/businesses/aac8e693-831d-4030-b8f8-eb9238e089bc/widget#/cart/menu/Session%20Time" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Book VO2 Testing') {
+                        bookingHTML = `<strong>Booking:</strong> <a href="https://dashboard.boulevard.io/booking/businesses/aac8e693-831d-4030-b8f8-eb9238e089bc/widget#/cart/menu/Session%20Time" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Reserve with Guest Relations') {
+                        const subject = activity.emailSubject || 'Wellness Activity Booking';
+                        bookingHTML = `<strong>Booking:</strong> <a href="mailto:smp.guestrelations@properhotel.com?subject=${encodeURIComponent(subject)}" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Book Beach Tennis') {
+                        bookingHTML = `<strong>Booking:</strong> <a href="mailto:smp.guestrelations@properhotel.com?subject=Book%20Beach%20Tennis" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Join on Eventbrite') {
+                        bookingHTML = `<strong>Booking:</strong> <a href="${activity.eventbriteUrl}" target="_blank" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else if (activity.bookingText === 'Purchase Day Pass') {
+                        bookingHTML = `<strong>Booking:</strong> <a href="mailto:wellness.smp@properhotel.com?subject=Proper%20Club%20Lounge%20Day%20Pass%20Request" style="color: #000; text-decoration: underline;">${activity.bookingText}</a>`;
+                    } else {
+                        bookingHTML = `<strong>Booking:</strong> ${activity.bookingText}`;
+                    }
+                }
+                
                 dayHTML += 
                     '<div class="activity-item' + (swappable ? ' swappable' : '') + '" data-activity-index="' + index + '" data-time-category="' + (activity.timeCategory || 'general') + '">' +
                     '<div class="activity-time">' + activity.time + '</div>' +
@@ -1375,7 +1407,7 @@
                      activity.price === 'Available' ? '' : 
                      activity.price === 'Menu pricing' ? 'Menu pricing' : 
                      activity.price) +
-                    (activity.bookingText ? (activity.price === 'Available' ? '' : ' | ') + '<strong>Booking:</strong> ' + activity.bookingText : '') +
+                    (bookingHTML ? (activity.price === 'Available' ? '' : ' | ') + bookingHTML : '') +
                     '</div>' +
                     '</div>';
                 
